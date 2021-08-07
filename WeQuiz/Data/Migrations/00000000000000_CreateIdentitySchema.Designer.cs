@@ -9,7 +9,7 @@ using WeQuiz.Data;
 
 namespace WeQuiz.Data.Migrations
 {
-    [DbContext(typeof(ApplicationDbContext))]
+    [DbContext(typeof(WeQuizDbContext))]
     [Migration("00000000000000_CreateIdentitySchema")]
     partial class CreateIdentitySchema
     {

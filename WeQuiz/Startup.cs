@@ -8,6 +8,7 @@ namespace WeQuiz
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
     using WeQuiz.Data;
+    using WeQuiz.Infrastructure;
 
     public class Startup
     {
@@ -19,7 +20,7 @@ namespace WeQuiz
         public void ConfigureServices(IServiceCollection services)
         {
             services
-                .AddDbContext<ApplicationDbContext>(options => options
+                .AddDbContext<WeQuizDbContext>(options => options
                     .UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddDatabaseDeveloperPageExceptionFilter();
@@ -33,7 +34,7 @@ namespace WeQuiz
                     options.Password.RequireNonAlphanumeric = false;
                     options.Password.RequireUppercase = false;
                 })
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+                .AddEntityFrameworkStores<WeQuizDbContext>();
 
             services.AddControllersWithViews();
         }
@@ -41,6 +42,8 @@ namespace WeQuiz
        
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.PrepareDatabase();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -65,6 +68,7 @@ namespace WeQuiz
                 endpoints.MapDefaultControllerRoute();
                 endpoints.MapRazorPages();
             });
+            
         }
     }
 }
