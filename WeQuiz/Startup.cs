@@ -8,6 +8,7 @@ namespace WeQuiz
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
     using WeQuiz.Data;
+    using WeQuiz.Data.Models;
     using WeQuiz.Infrastructure;
 
     public class Startup
@@ -26,7 +27,7 @@ namespace WeQuiz
             services.AddDatabaseDeveloperPageExceptionFilter();
 
             services
-                .AddDefaultIdentity<IdentityUser>(options =>
+                .AddDefaultIdentity<User>(options =>
                 {
                     options.SignIn.RequireConfirmedAccount = false;
                     options.Password.RequireDigit = false;
@@ -34,6 +35,7 @@ namespace WeQuiz
                     options.Password.RequireNonAlphanumeric = false;
                     options.Password.RequireUppercase = false;
                 })
+                .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<WeQuizDbContext>();
 
             services.AddControllersWithViews();

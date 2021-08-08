@@ -4,7 +4,7 @@
     using Microsoft.EntityFrameworkCore;
     using WeQuiz.Data.Models;
 
-    public class WeQuizDbContext : IdentityDbContext
+    public class WeQuizDbContext : IdentityDbContext<User>
     {
         public WeQuizDbContext(DbContextOptions<WeQuizDbContext> options)
             : base(options)
