@@ -20,6 +20,9 @@
 
             SeedDistricts(data);
             SeedPopulatedAreas(data);
+            SeedCategories(data);
+            SeedSubcategories(data);
+            SeedQuestionTypes(data);
 
             return app;
         }
@@ -86,6 +89,80 @@
             }
 
             data.PopulatedAreas.AddRange(populatedAreas);
+            data.SaveChanges();
+        }
+
+        private static void SeedCategories(WeQuizDbContext data)
+        {
+            if (data.Categories.Any())
+            {
+                return;
+            }
+
+            data.Categories.AddRange(new[]
+            {
+                new Category {Name = "Български език и литература", SchoolCode=0 },
+                new Category {Name = "Английски език", SchoolCode=0 },
+                new Category {Name = "Математика", SchoolCode=0 },
+                new Category {Name = "Информатика", SchoolCode=0 },
+                new Category {Name = "Информационни технологии", SchoolCode=0 },
+                new Category {Name = "История и цивилизация", SchoolCode=0 },
+                new Category {Name = "География и икономика", SchoolCode=0 },
+                new Category {Name = "Философия", SchoolCode=0 },
+                new Category {Name = "Биология и здравно образование", SchoolCode=0 },
+                new Category {Name = "Физика и астрономия", SchoolCode=0 },
+                new Category {Name = "Химия и опазване на околната среда", SchoolCode=0 },
+                new Category {Name = "Общи", SchoolCode=0 },
+            });
+
+            data.SaveChanges();
+        }
+
+        private static void SeedSubcategories(WeQuizDbContext data)
+        {
+            if (data.Subcategories.Any())
+            {
+                return;
+            }
+
+            var categories = data.Categories.ToList();
+
+            var subCategories = new List<Subcategory>();
+
+            foreach (var category in categories)
+            {
+                if (category.Name != "Общи")
+                {
+                    for (int i = 5; i <= 12; i++)
+                    {
+                        subCategories.Add(new Subcategory
+                        {
+                            Name = i + " клас",
+                            SchoolCode = 0,
+                            CategoryId = category.Id
+                        });
+                    }
+                }
+            }
+
+            data.Subcategories.AddRange(subCategories);
+            data.SaveChanges();
+        }
+
+        private static void SeedQuestionTypes(WeQuizDbContext data)
+        {
+            if (data.QuestionTypes.Any())
+            {
+                return;
+            }
+
+            data.QuestionTypes.AddRange(new[]
+            {
+                new QuestionType { Type = "Избираем отговор"},
+                new QuestionType { Type = "Вярно/невярно"},
+                new QuestionType { Type = "Точен отговор"},
+            });
+
             data.SaveChanges();
         }
     }
