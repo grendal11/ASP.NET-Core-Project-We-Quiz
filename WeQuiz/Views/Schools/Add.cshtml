@@ -1,0 +1,55 @@
+﻿@model AddSchoolFormModel
+
+@{
+    ViewData["Title"] = "Добавяне на училище";
+}
+
+<h1 class="text-center"->@ViewData["Title"]</h1>
+<br />
+<form method="post" class="col-lg-6 offset-lg-3 col-sm-12 col-md-8 offset-md-2">
+    <div class="form-group">
+        <label asp-for="DistrictId"></label>
+        <select asp-for="DistrictId" class="form-control" id="DistrictId">
+            <option selected>Изберете...</option>
+            @foreach (var district in Model.Districts)
+            {
+                <option value="@district.Id">@district.Name</option>
+            }
+        </select>
+    </div>
+    <div class="form-group">
+        <label asp-for="PopulatedAreaId"></label>
+        <select asp-for="PopulatedAreaId" class="form-control" id="PopulatedAreaId">
+        </select>
+    </div>
+    <div class="form-group">
+        <label asp-for="Name"></label>
+        <input asp-for="Name" class="form-control" id="name">
+        <span asp-validation-for="Name" class="small text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="SchoolCode"></label>
+        <a href="https://data.egov.bg/data/resourceView/cac4d569-529c-4209-b797-1cf5f69901f5" target="_blank">
+            <i class="fas fa-info-circle" title="Списък с училища и код по НЕИСПУО"></i>
+        </a>
+        <input asp-for="SchoolCode" class="form-control" id="schoolCode">
+        <span asp-validation-for="SchoolCode" class="small text-danger"></span>
+    </div>
+    <input class="btn btn-primary" type="submit" value="Запис" />
+</form>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#DistrictId").change(function () {
+            $.get("/Schools/GetPopulatedAreas", { districtId: $("#DistrictId").val() },
+                function (data) {
+                    $("#PopulatedAreaId").empty();
+                    $.each(data, function (index, row) {
+                        $("#PopulatedAreaId")
+                            .append("<option value='"+row.id+"'>"+row.name+"</option>")
+                    });
+                });
+        })
+    });
+</script>
