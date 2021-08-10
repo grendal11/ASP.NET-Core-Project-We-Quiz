@@ -42,6 +42,11 @@
         [HttpPost]
         public IActionResult Add(AddSchoolFormModel school)
         {
+            if (!this.data.PopulatedAreas.Any(p=>p.Id == school.PopulatedAreaId))
+            {
+                this.ModelState.AddModelError(nameof(school.PopulatedAreaId), "Населеното място не съществува.");
+            }
+
             if (!ModelState.IsValid)
             {
                 school.Districts = this.GetDistricts();
@@ -60,6 +65,38 @@
             data.SaveChanges();
 
             return RedirectToAction("All", "Schools");
+        }
+
+        public IActionResult AddPopulatedArea() => View(new AddPopulatedAreaFormModel
+        {
+            Districts = this.GetDistricts()
+        });
+
+        [HttpPost]
+        public IActionResult AddPopulatedArea(AddPopulatedAreaFormModel populatedArea)
+        {
+            if (!this.data.Districts.Any(d => d.Id == populatedArea.DistrictId))
+            {
+                this.ModelState.AddModelError(nameof(populatedArea.DistrictId), "Няма такава област.");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                populatedArea.Districts = this.GetDistricts();
+
+                return View(populatedArea);
+            }
+
+            var newPopulatedArea = new PopulatedArea
+            {
+                Name = populatedArea.Name,
+                DistrictId = populatedArea.DistrictId
+            };
+
+            data.PopulatedAreas.Add(newPopulatedArea);
+            data.SaveChanges();
+
+            return RedirectToAction("Add", "Schools");
         }
 
         private IEnumerable<DistrictViewModel> GetDistricts()

@@ -4,7 +4,7 @@
     using System.ComponentModel.DataAnnotations;
     using WeQuiz.Views.Schools;
 
-    using static Data.DataConstants;
+    using static Data.DataConstants.School;
 
     public class AddSchoolFormModel
     {

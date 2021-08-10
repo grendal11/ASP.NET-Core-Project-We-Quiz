@@ -4,12 +4,15 @@
     {
         public const int QuestionTypeMaxLength = 20;
 
-        public const int PopulatedAreaNameMaxLength = 20;
-
         public const int CategoryNameMaxLength = 50;
 
-        public const int SchoolNameMaxLength = 50;
-        public const int SchoolNameMinLength = 4;
+        public class School
+        {
+            public const int SchoolNameMaxLength = 50;
+            public const int SchoolNameMinLength = 4;
+            public const int PopulatedAreaNameMaxLength = 20;
+            public const int PopulatedAreaNameMinLength = 3;
+        }
 
         public class User
         {
