@@ -16,7 +16,10 @@
         public DbSet<PopulatedArea> PopulatedAreas { get; init; }
         public DbSet<QuestionType> QuestionTypes { get; init; }
         public DbSet<School> Schools { get; init; }
+        public DbSet<SchoolRequest> SchoolRequests { get; init; }
         public DbSet<Subcategory> Subcategories { get; init; }
+        public DbSet<SuggestedCategory> SuggestedCategories { get; init; }
+        public DbSet<SuggestedSubcategory> SuggestedSubcategories { get; init; }
 
 
     }

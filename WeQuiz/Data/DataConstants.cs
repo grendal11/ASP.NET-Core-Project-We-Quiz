@@ -5,6 +5,7 @@
         public const int QuestionTypeMaxLength = 20;
 
         public const int CategoryNameMaxLength = 50;
+        public const int DescriptionMaxLength = 200;
 
         public class School
         {

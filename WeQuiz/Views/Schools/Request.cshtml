@@ -1,0 +1,26 @@
+﻿@model SchoolRequestFormModel
+
+@{
+    ViewData["Title"] = "Заяви училище";
+}
+
+<h1 class="text-center" ->@ViewData["Title"]</h1>
+<br />
+<form method="post" class="col-lg-6 offset-lg-3 col-sm-12 col-md-8 offset-md-2">
+    <div class="form-group">
+        <label asp-for="District"></label>
+        <input asp-for="District" class="form-control" id="name">
+        <span asp-validation-for="District" class="small text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="PopulatedArea"></label>
+        <input asp-for="PopulatedArea" class="form-control" id="name">
+        <span asp-validation-for="PopulatedArea" class="small text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Name"></label>
+        <input asp-for="Name" class="form-control" id="name">
+        <span asp-validation-for="Name" class="small text-danger"></span>
+    </div>    
+    <input class="btn btn-primary" type="submit" value="Подай заявка" />
+</form>
