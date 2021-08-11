@@ -1,4 +1,4 @@
-﻿namespace WeQuiz.Models.Schools
+﻿namespace WeQuiz.Models.Requests
 {
     using System.ComponentModel.DataAnnotations;
 

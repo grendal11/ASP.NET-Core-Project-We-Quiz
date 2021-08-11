@@ -1,0 +1,53 @@
+﻿@{
+    ViewData["Title"] = "Заявки";
+}
+
+<h1 class="text-center" ->@ViewData["Title"]</h1>
+<br />
+
+<div class="row">
+    <div class="col-sm-12 col-md-10 offset-md-1">
+        <div class="card bg-light mb-3">
+            <div class="card-header text-white bg-secondary"><i class="fas fa-school"></i>&nbsp;&nbsp;Училище</div>
+            <div class="card-body">
+                <h5 class="card-title">Заявки за училища и роли</h5>
+                <div class="row">
+                    <p class="card-text col-10">
+                        Ролите, които може да заявите са "Училищен администратор", "Учител" или "Ученик".
+                    </p>
+                    <p class="col-2">
+                        <a asp-controller="Schools" asp-action="All" class="btn btn-outline-secondary btn-sm active float-right" role="button" aria-pressed="true">Виж списък</a>
+                    </p>
+                </div>
+                <div class="row">
+                    <p class="card-text col-10">
+                        В случай, че не откривате вашето училище можете да го заявите и да се регистрирате в него след като бъде одобрено от администратор.
+                    </p>
+                    <p class="col-2">
+                        <a asp-controller="Requests" asp-action="School" class="btn btn-outline-secondary btn-sm active float-right" role="button" aria-pressed="true">Заяви училище</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-12 col-md-10 offset-md-1">
+        <div class="card bg-light mb-3">
+            <div class="card-header text-white bg-secondary"><i class="far fa-list-alt"></i>&nbsp;&nbsp;Категории</div>
+            <div class="card-body">
+                <h5 class="card-title">Light card title</h5>
+                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                <a asp-controller="Requests" asp-action="School" class="btn btn-secondary btn-sm btn-dark active float-right" role="button" aria-pressed="true">Заяви училище</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-12 col-md-10 offset-md-1">
+        <div class="card bg-light mb-3">
+            <div class="card-header text-white bg-secondary"><i class="fas fa-check"></i>&nbsp;&nbsp;Въпроси</div>
+            <div class="card-body">
+                <h5 class="card-title">Light card title</h5>
+                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                <a asp-controller="Requests" asp-action="School" class="btn btn-secondary btn-sm btn-dark active float-right" role="button" aria-pressed="true">Заяви училище</a>
+            </div>
+        </div>
+    </div>
+</div>

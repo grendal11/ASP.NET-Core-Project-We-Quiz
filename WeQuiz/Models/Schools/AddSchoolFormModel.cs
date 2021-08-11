@@ -13,7 +13,7 @@
         [Display(Name = "Име на училище")]
         public string Name { get; init; }
 
-        [Required]
+        [Required(ErrorMessage = "Въведете код по НЕИСПУО")]
         [RegularExpression("[0-9]{6,7}", ErrorMessage = "Кодът е поне 6-цифрен")]
         [Display(Name = "Код по НЕИСПУО")]
         public string SchoolCode { get; init; }

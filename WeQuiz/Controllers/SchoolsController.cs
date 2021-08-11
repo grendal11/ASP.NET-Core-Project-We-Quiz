@@ -42,7 +42,7 @@
         [HttpPost]
         public IActionResult Add(AddSchoolFormModel school)
         {
-            if (!this.data.PopulatedAreas.Any(p=>p.Id == school.PopulatedAreaId))
+            if (!this.data.PopulatedAreas.Any(p => p.Id == school.PopulatedAreaId))
             {
                 this.ModelState.AddModelError(nameof(school.PopulatedAreaId), "Населеното място не съществува.");
             }
@@ -65,7 +65,7 @@
             data.SaveChanges();
 
             return RedirectToAction("All", "Schools");
-        }
+        }        
 
         public IActionResult AddPopulatedArea() => View(new AddPopulatedAreaFormModel
         {
