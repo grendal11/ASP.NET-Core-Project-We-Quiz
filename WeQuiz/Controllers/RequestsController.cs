@@ -1,6 +1,8 @@
 ﻿namespace WeQuiz.Controllers
 {
     using Microsoft.AspNetCore.Mvc;
+    using System.Collections.Generic;
+    using System.Linq;
     using System.Security.Claims;
     using WeQuiz.Data;
     using WeQuiz.Data.Models;
@@ -40,7 +42,7 @@
             return RedirectToAction("All", "Schools");
         }
 
-        //Todo
+
         public IActionResult Category() => View();
 
         [HttpPost]
@@ -67,26 +69,51 @@
             return RedirectToAction("All", "Requests");
         }
 
-        //public IActionResult Subcategory() => View();
+        public IActionResult Subcategory() => View(new SubcategoryRequestFormModel
+        {
+            Categories = this.GetCategories()
+        });
 
-        //[HttpPost]
-        //public IActionResult Subcategory(SubcategoryRequestFormModel subCategory)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return View(subCategory);
-        //    }
+        [HttpPost]
+        public IActionResult Subcategory(SubcategoryRequestFormModel subCategory)
+        {
+            if (!this.data.Categories.Any(c => c.Id == subCategory.CategoryId))
+            {
+                this.ModelState.AddModelError(nameof(subCategory.CategoryId), "Категорията не съществува.");
+            }
 
-        //    var newSubcategory = new SubcategoryRequest
-        //    {
+            if (!ModelState.IsValid)
+            {
+                subCategory.Categories= this.GetCategories();
 
-        //    };
+                return View(subCategory);
+            }
 
-        //    data.SubcategoryRequests.Add(newSubcategory);
-        //    data.SaveChanges();
+            var newSubcategory = new SuggestedSubcategory
+            {
+                Name = subCategory.Name,
+                Description = subCategory.Description,
+                CategoryId = subCategory.CategoryId,
+                SchoolCode = subCategory.IsPrivate ? /*currentUser.SchoolCode*/ 500102 : this.data.Categories.Find(subCategory.CategoryId).SchoolCode
+            };
 
-        //    return RedirectToAction("All", "Requests");
-        //}
+            data.SuggestedSubcategories.Add(newSubcategory);
+            data.SaveChanges();
+
+            return RedirectToAction("All", "Requests");
+        }
+
+
+        private IEnumerable<CategoryViewModel> GetCategories()
+            => this.data
+            .Categories
+            .Select(c => new CategoryViewModel
+            {
+                Id = c.Id,
+                Name = c.Name,
+                SchoolCode = c.SchoolCode
+            })
+            .ToList();
 
     }
 }
