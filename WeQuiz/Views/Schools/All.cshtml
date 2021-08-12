@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<SchoolViewModel>
 
 @{
-    ViewData["Title"] = "Регистрирани училища";
+    ViewBag.Title = "Регистрирани училища";
 }
 
 @{
@@ -9,7 +9,7 @@
 }
 
 
-<h1 class="text-center">@ViewData["Title"]</h1>
+<h1 class="text-center">@ViewBag.Title</h1>
 <a asp-controller="Schools" asp-action="Add" class="btn btn-secondary btn-sm btn-dark active float-right" role="button" aria-pressed="true">Добави училище</a>
 <br />
 <table class="table table-bordered table-hover">

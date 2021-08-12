@@ -2,6 +2,7 @@
 {
     using System.ComponentModel.DataAnnotations;
 
+    using static Data.DataConstants.PopulatedArea;
     using static Data.DataConstants.School;
 
     public class SchoolRequest
@@ -14,12 +15,12 @@
 
 
         [Required]
-        [MaxLength(PopulatedAreaNameMaxLength)]
+        [MaxLength(NameMaxLength)]
         public string District { get; set; }
 
 
         [Required]
-        [MaxLength(PopulatedAreaNameMaxLength)]
+        [MaxLength(NameMaxLength)]
         public string PopulatedArea { get; set; }
 
     }

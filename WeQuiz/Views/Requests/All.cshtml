@@ -1,42 +1,35 @@
 ﻿@{
-    ViewData["Title"] = "Заявки";
+    ViewBag.Title = "Заявки";
 }
 
-<h1 class="text-center" ->@ViewData["Title"]</h1>
+<h1 class="text-center" ->@ViewBag.Title</h1>
 <br />
 
 <div class="row">
     <div class="col-sm-12 col-md-10 offset-md-1">
         <div class="card bg-light mb-3">
-            <div class="card-header text-white bg-secondary"><i class="fas fa-school"></i>&nbsp;&nbsp;Училище</div>
+            <div class="card-header text-white bg-secondary"><i class="fas fa-school"></i>&nbsp;&nbsp;Заявки за училища и роли</div>
             <div class="card-body">
-                <h5 class="card-title">Заявки за училища и роли</h5>
-                <div class="row">
-                    <p class="card-text col-10">
-                        Ролите, които може да заявите са "Училищен администратор", "Учител" или "Ученик".
-                    </p>
-                    <p class="col-2">
-                        <a asp-controller="Schools" asp-action="All" class="btn btn-outline-secondary btn-sm active float-right" role="button" aria-pressed="true">Виж списък</a>
-                    </p>
-                </div>
-                <div class="row">
-                    <p class="card-text col-10">
-                        В случай, че не откривате вашето училище можете да го заявите и да се регистрирате в него след като бъде одобрено от администратор.
-                    </p>
-                    <p class="col-2">
-                        <a asp-controller="Requests" asp-action="School" class="btn btn-outline-secondary btn-sm active float-right" role="button" aria-pressed="true">Заяви училище</a>
-                    </p>
-                </div>
+                <p class="card-text ">
+                    Ролите, които може да заявите са "Училищен администратор", "Учител" или "Ученик".
+                </p>
+                <p class="card-text">
+                    В случай, че не откривате вашето училище можете да го заявите и да се регистрирате в него след като бъде одобрено от администратор.
+                </p>
+                <a asp-controller="Schools" asp-action="All" class="btn btn-outline-primary btn-sm ml-2 float-right" role="button" aria-pressed="true">Списък с училищата</a>
+                <a asp-controller="Requests" asp-action="School" class="btn btn-outline-danger btn-sm ml-2 float-right" role="button" aria-pressed="true">Заяви училище</a>
             </div>
         </div>
     </div>
     <div class="col-sm-12 col-md-10 offset-md-1">
         <div class="card bg-light mb-3">
-            <div class="card-header text-white bg-secondary"><i class="far fa-list-alt"></i>&nbsp;&nbsp;Категории</div>
+            <div class="card-header text-white bg-secondary"><i class="far fa-list-alt"></i>&nbsp;&nbsp;Заявки за категории и подкатегории</div>
             <div class="card-body">
-                <h5 class="card-title">Light card title</h5>
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                <a asp-controller="Requests" asp-action="School" class="btn btn-secondary btn-sm btn-dark active float-right" role="button" aria-pressed="true">Заяви училище</a>
+                <p class="card-text">Ако искате да предлагате въпроси за категории/подкатегории, които все още не са налични в системата може да ги предложите от тук.</p>
+                <p class="card-text">Учениците и потребители, които все още не са присъединени към уилище могат да предлагат само подкатегории.</p>
+                <a asp-controller="Categories" asp-action="All" class="btn btn-outline-primary btn-sm ml-2 float-right" role="button" aria-pressed="true">Налични категории и подкатегории</a>
+                <a asp-controller="Requests" asp-action="Subcategory" class="btn btn-outline-danger btn-sm ml-2 float-right" role="button" aria-pressed="true">Предложи подкатегория</a>
+                <a asp-controller="Requests" asp-action="Category" class="btn btn-outline-danger btn-sm ml-2 float-right" role="button" aria-pressed="true">Предложи категория</a>
             </div>
         </div>
     </div>
