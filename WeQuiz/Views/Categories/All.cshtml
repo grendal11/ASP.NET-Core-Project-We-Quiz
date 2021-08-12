@@ -1,0 +1,43 @@
+﻿@model IEnumerable<AllCategoriesViewModel>
+
+@{
+    ViewBag.Title = "Налични категории";
+}
+
+@{
+    int i = 1;
+}
+
+
+<h1 class="text-center">@ViewBag.Title</h1>
+<br />
+<table class="table table-bordered table-hover">
+    <thead class="thead-light">
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Категория</th>
+            <th scope="col">Подкатегория</th>
+            <th scope="col">Достъпност</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var category in Model)
+        {
+        <tr>
+            <th scope="row">@i</th>
+            <td>@category.Category</td>
+            <td>@category.Subcategory</td>
+            @if (category.SchoolCode != 0)
+            {
+                <td>@category.SchoolName</td>
+            }
+            else
+            {
+                <td>Достъпно за всички</td>
+            }
+
+        </tr>
+            i++;
+        }
+    </tbody>
+</table>
