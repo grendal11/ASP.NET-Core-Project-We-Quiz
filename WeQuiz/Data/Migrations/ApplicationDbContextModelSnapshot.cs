@@ -166,7 +166,7 @@ namespace WeQuiz.Data.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<int>("SchoolCode")
+                    b.Property<int>("SchoolId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -297,7 +297,7 @@ namespace WeQuiz.Data.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<int>("SchoolCode")
+                    b.Property<int>("SchoolId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -323,7 +323,7 @@ namespace WeQuiz.Data.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<int>("SchoolCode")
+                    b.Property<int>("SchoolId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -350,7 +350,7 @@ namespace WeQuiz.Data.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<int>("SchoolCode")
+                    b.Property<int>("SchoolId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -410,7 +410,7 @@ namespace WeQuiz.Data.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<int>("SchoolCode")
+                    b.Property<int>("SchoolId")
                         .HasColumnType("int");
 
                     b.Property<string>("SecurityStamp")
@@ -492,7 +492,7 @@ namespace WeQuiz.Data.Migrations
                     b.HasOne("WeQuiz.Data.Models.District", "District")
                         .WithMany("PopulatedAreas")
                         .HasForeignKey("DistrictId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("District");
@@ -503,7 +503,7 @@ namespace WeQuiz.Data.Migrations
                     b.HasOne("WeQuiz.Data.Models.PopulatedArea", "PopulatedArea")
                         .WithMany("Schools")
                         .HasForeignKey("PopulatedAreaId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("PopulatedArea");
@@ -514,7 +514,7 @@ namespace WeQuiz.Data.Migrations
                     b.HasOne("WeQuiz.Data.Models.Category", "Category")
                         .WithMany("Subcategories")
                         .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Category");
@@ -523,9 +523,9 @@ namespace WeQuiz.Data.Migrations
             modelBuilder.Entity("WeQuiz.Data.Models.SuggestedSubcategory", b =>
                 {
                     b.HasOne("WeQuiz.Data.Models.Category", "Category")
-                        .WithMany()
+                        .WithMany("SuggestedSubcategories")
                         .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Category");
@@ -534,6 +534,8 @@ namespace WeQuiz.Data.Migrations
             modelBuilder.Entity("WeQuiz.Data.Models.Category", b =>
                 {
                     b.Navigation("Subcategories");
+
+                    b.Navigation("SuggestedSubcategories");
                 });
 
             modelBuilder.Entity("WeQuiz.Data.Models.District", b =>

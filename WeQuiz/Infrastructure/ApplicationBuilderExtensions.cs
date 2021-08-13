@@ -101,18 +101,18 @@
 
             data.Categories.AddRange(new[]
             {
-                new Category {Name = "Български език и литература", SchoolCode=0 },
-                new Category {Name = "Английски език", SchoolCode=0 },
-                new Category {Name = "Математика", SchoolCode=0 },
-                new Category {Name = "Информатика", SchoolCode=0 },
-                new Category {Name = "Информационни технологии", SchoolCode=0 },
-                new Category {Name = "История и цивилизация", SchoolCode=0 },
-                new Category {Name = "География и икономика", SchoolCode=0 },
-                new Category {Name = "Философия", SchoolCode=0 },
-                new Category {Name = "Биология и здравно образование", SchoolCode=0 },
-                new Category {Name = "Физика и астрономия", SchoolCode=0 },
-                new Category {Name = "Химия и опазване на околната среда", SchoolCode=0 },
-                new Category {Name = "Общи", SchoolCode=0 },
+                new Category {Name = "Български език и литература", SchoolId=0 },
+                new Category {Name = "Английски език", SchoolId=0 },
+                new Category {Name = "Математика", SchoolId=0 },
+                new Category {Name = "Информатика", SchoolId=0 },
+                new Category {Name = "Информационни технологии", SchoolId=0 },
+                new Category {Name = "История и цивилизация", SchoolId=0 },
+                new Category {Name = "География и икономика", SchoolId=0 },
+                new Category {Name = "Философия", SchoolId=0 },
+                new Category {Name = "Биология и здравно образование", SchoolId=0 },
+                new Category {Name = "Физика и астрономия", SchoolId=0 },
+                new Category {Name = "Химия и опазване на околната среда", SchoolId=0 },
+                new Category {Name = "Общи", SchoolId = 0},
             });
 
             data.SaveChanges();
@@ -138,7 +138,7 @@
                         subCategories.Add(new Subcategory
                         {
                             Name = i + " клас",
-                            SchoolCode = 0,
+                            SchoolId = 0,
                             CategoryId = category.Id
                         });
                     }

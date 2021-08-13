@@ -12,6 +12,7 @@
         [MaxLength(AliasMaxLength)]
         public string Alias { get; set; }
 
-        public int SchoolCode { get; set; }
+        public int SchoolId { get; set; }
+
     }
 }

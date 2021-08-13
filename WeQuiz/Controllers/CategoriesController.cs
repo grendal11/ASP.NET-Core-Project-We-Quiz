@@ -22,7 +22,7 @@
                 {
                     Category = s.Category.Name,
                     Subcategory = s.Name,
-                    SchoolCode = s.SchoolCode,
+                    SchoolId = s.SchoolId,
                 })
                 .OrderBy(c => c.Category)
                 .ThenBy(c => c.Subcategory)
@@ -30,11 +30,11 @@
 
             foreach (var cat in allCategories)
             {
-                if (cat.SchoolCode != 0)
+                if (cat.SchoolId != 0)
                 {
                     cat.SchoolName = this.data
                         .Schools
-                        .First(s => s.SchoolCode == cat.SchoolCode).Name;
+                        .First(s => s.Id == cat.SchoolId).Name;
                 }
             }
 

@@ -13,8 +13,10 @@
         [MaxLength(NameMaxLength)]
         public string Name { get; set; }
 
-        public int SchoolCode { get; set; }
+        public int SchoolId { get; set; }
 
         public IEnumerable<Subcategory> Subcategories { get; init; } = new List<Subcategory>();
+
+        public IEnumerable<SuggestedSubcategory> SuggestedSubcategories { get; init; } = new List<SuggestedSubcategory>();
     }
 }

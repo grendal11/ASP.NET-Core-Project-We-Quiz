@@ -6,6 +6,6 @@
 
         public string Name { get; set; }
 
-        public int SchoolCode { get; set; }
+        public int SchoolId { get; set; }
     }
 }

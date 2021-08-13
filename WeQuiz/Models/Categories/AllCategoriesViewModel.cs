@@ -10,6 +10,6 @@
 
         public string SchoolName { get; set; }
 
-        public int SchoolCode { get; init; }
+        public int SchoolId { get; init; }
     }
 }

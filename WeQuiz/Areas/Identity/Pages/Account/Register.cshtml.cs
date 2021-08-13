@@ -73,7 +73,7 @@
                     Email = Input.Email,
                     FullName = Input.FullName,
                     Alias = Input.Alias,
-                    SchoolCode = 0
+                    SchoolId = 0
                 };
 
                 var result = await this.userManager.CreateAsync(user, Input.Password);

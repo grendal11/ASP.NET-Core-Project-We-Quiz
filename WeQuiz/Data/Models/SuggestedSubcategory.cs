@@ -13,7 +13,7 @@
         [MaxLength(NameMaxLength)]
         public string Name { get; set; }
 
-        public int SchoolCode { get; set; }
+        public int SchoolId { get; set; }
 
         [MaxLength(DescriptionMaxLength)]
         public string Description { get; set; }

@@ -10,15 +10,15 @@ using WeQuiz.Data;
 namespace WeQuiz.Data.Migrations
 {
     [DbContext(typeof(WeQuizDbContext))]
-    [Migration("20210808205629_UserNamesSchoolCodeColumns")]
-    partial class UserNamesSchoolCodeColumns
+    [Migration("20210813171926_UsersCategoriesSchoolsTownsTables")]
+    partial class UsersCategoriesSchoolsTownsTables
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.6")
+                .HasAnnotation("ProductVersion", "5.0.8")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -168,7 +168,7 @@ namespace WeQuiz.Data.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<int>("SchoolCode")
+                    b.Property<int>("SchoolId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -257,6 +257,33 @@ namespace WeQuiz.Data.Migrations
                     b.ToTable("Schools");
                 });
 
+            modelBuilder.Entity("WeQuiz.Data.Models.SchoolRequest", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("District")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("PopulatedArea")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SchoolRequests");
+                });
+
             modelBuilder.Entity("WeQuiz.Data.Models.Subcategory", b =>
                 {
                     b.Property<int>("Id")
@@ -272,7 +299,7 @@ namespace WeQuiz.Data.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<int>("SchoolCode")
+                    b.Property<int>("SchoolId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -280,6 +307,59 @@ namespace WeQuiz.Data.Migrations
                     b.HasIndex("CategoryId");
 
                     b.ToTable("Subcategories");
+                });
+
+            modelBuilder.Entity("WeQuiz.Data.Models.SuggestedCategory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<int>("SchoolId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SuggestedCategories");
+                });
+
+            modelBuilder.Entity("WeQuiz.Data.Models.SuggestedSubcategory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<int>("SchoolId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.ToTable("SuggestedSubcategories");
                 });
 
             modelBuilder.Entity("WeQuiz.Data.Models.User", b =>
@@ -332,7 +412,7 @@ namespace WeQuiz.Data.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<int>("SchoolCode")
+                    b.Property<int>("SchoolId")
                         .HasColumnType("int");
 
                     b.Property<string>("SecurityStamp")
@@ -414,7 +494,7 @@ namespace WeQuiz.Data.Migrations
                     b.HasOne("WeQuiz.Data.Models.District", "District")
                         .WithMany("PopulatedAreas")
                         .HasForeignKey("DistrictId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("District");
@@ -425,7 +505,7 @@ namespace WeQuiz.Data.Migrations
                     b.HasOne("WeQuiz.Data.Models.PopulatedArea", "PopulatedArea")
                         .WithMany("Schools")
                         .HasForeignKey("PopulatedAreaId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("PopulatedArea");
@@ -436,7 +516,18 @@ namespace WeQuiz.Data.Migrations
                     b.HasOne("WeQuiz.Data.Models.Category", "Category")
                         .WithMany("Subcategories")
                         .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("WeQuiz.Data.Models.SuggestedSubcategory", b =>
+                {
+                    b.HasOne("WeQuiz.Data.Models.Category", "Category")
+                        .WithMany("SuggestedSubcategories")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Category");
@@ -445,6 +536,8 @@ namespace WeQuiz.Data.Migrations
             modelBuilder.Entity("WeQuiz.Data.Models.Category", b =>
                 {
                     b.Navigation("Subcategories");
+
+                    b.Navigation("SuggestedSubcategories");
                 });
 
             modelBuilder.Entity("WeQuiz.Data.Models.District", b =>

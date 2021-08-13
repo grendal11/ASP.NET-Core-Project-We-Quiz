@@ -1,5 +1,6 @@
 ﻿namespace WeQuiz.Data.Models
 {
+    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
     using static DataConstants.School;
@@ -17,5 +18,6 @@
 
         public int PopulatedAreaId { get; set; }
         public PopulatedArea PopulatedArea { get; set; }
+       
     }
 }

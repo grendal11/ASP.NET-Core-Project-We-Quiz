@@ -60,7 +60,7 @@
             {
                 Name = category.Name,
                 Description = category.Description,
-                SchoolCode = category.IsPrivate ? /*currentUser.SchoolCode*/ 500102 : 0
+                SchoolId = category.IsPrivate ? /*currentUser.SchoolId*/ 1 : 0
             };
 
             data.SuggestedCategories.Add(newCategory);
@@ -94,7 +94,7 @@
                 Name = subCategory.Name,
                 Description = subCategory.Description,
                 CategoryId = subCategory.CategoryId,
-                SchoolCode = subCategory.IsPrivate ? /*currentUser.SchoolCode*/ 500102 : this.data.Categories.Find(subCategory.CategoryId).SchoolCode
+                SchoolId = subCategory.IsPrivate ? /*currentUser.SchoolId*/ 1 : this.data.Categories.Find(subCategory.CategoryId).SchoolId
             };
 
             data.SuggestedSubcategories.Add(newSubcategory);
@@ -111,7 +111,7 @@
             {
                 Id = c.Id,
                 Name = c.Name,
-                SchoolCode = c.SchoolCode
+                SchoolId = c.SchoolId
             })
             .ToList();
 
