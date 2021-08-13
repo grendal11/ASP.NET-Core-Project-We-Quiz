@@ -10,8 +10,8 @@ using WeQuiz.Data;
 namespace WeQuiz.Data.Migrations
 {
     [DbContext(typeof(WeQuizDbContext))]
-    [Migration("20210813200707_QuestionsTables")]
-    partial class QuestionsTables
+    [Migration("20210813205935_QuestionsSuggestQuestionsTables")]
+    partial class QuestionsSuggestQuestionsTables
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -469,6 +469,115 @@ namespace WeQuiz.Data.Migrations
                     b.ToTable("SuggestedCategories");
                 });
 
+            modelBuilder.Entity("WeQuiz.Data.Models.SuggestedChoiceQuestion", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("AnswerA")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("AnswerB")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("AnswerC")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("AnswerD")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("Class")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Points")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SchoolId")
+                        .HasColumnType("int");
+
+                    b.Property<bool?>("Status")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("SubcategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<string>("TextA")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("TextB")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("TextC")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("TextD")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SubcategoryId");
+
+                    b.ToTable("SuggestedChoiceQuestions");
+                });
+
+            modelBuilder.Entity("WeQuiz.Data.Models.SuggestedExactAnswerQuestion", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("Answer")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Class")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Points")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SchoolId")
+                        .HasColumnType("int");
+
+                    b.Property<bool?>("Status")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("SubcategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SubcategoryId");
+
+                    b.ToTable("SuggestedExactAnswerQuestions");
+                });
+
             modelBuilder.Entity("WeQuiz.Data.Models.SuggestedSubcategory", b =>
                 {
                     b.Property<int>("Id")
@@ -496,6 +605,46 @@ namespace WeQuiz.Data.Migrations
                     b.HasIndex("CategoryId");
 
                     b.ToTable("SuggestedSubcategories");
+                });
+
+            modelBuilder.Entity("WeQuiz.Data.Models.SuggestedTrueFalseQuestion", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("Answer")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("Class")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Points")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SchoolId")
+                        .HasColumnType("int");
+
+                    b.Property<bool?>("Status")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("SubcategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SubcategoryId");
+
+                    b.ToTable("SuggestedTrueFalseQuestions");
                 });
 
             modelBuilder.Entity("WeQuiz.Data.Models.Teacher", b =>
@@ -570,7 +719,7 @@ namespace WeQuiz.Data.Migrations
 
                     b.HasIndex("QuestionId");
 
-                    b.ToTable("trueFalseAnswers");
+                    b.ToTable("TrueFalseAnswers");
                 });
 
             modelBuilder.Entity("WeQuiz.Data.Models.User", b =>
@@ -800,6 +949,28 @@ namespace WeQuiz.Data.Migrations
                     b.Navigation("Category");
                 });
 
+            modelBuilder.Entity("WeQuiz.Data.Models.SuggestedChoiceQuestion", b =>
+                {
+                    b.HasOne("WeQuiz.Data.Models.Subcategory", "Subcategory")
+                        .WithMany("SuggestedChoiceQuestions")
+                        .HasForeignKey("SubcategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Subcategory");
+                });
+
+            modelBuilder.Entity("WeQuiz.Data.Models.SuggestedExactAnswerQuestion", b =>
+                {
+                    b.HasOne("WeQuiz.Data.Models.Subcategory", "Subcategory")
+                        .WithMany("SuggestedExactAnswerQuestions")
+                        .HasForeignKey("SubcategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Subcategory");
+                });
+
             modelBuilder.Entity("WeQuiz.Data.Models.SuggestedSubcategory", b =>
                 {
                     b.HasOne("WeQuiz.Data.Models.Category", "Category")
@@ -809,6 +980,17 @@ namespace WeQuiz.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("WeQuiz.Data.Models.SuggestedTrueFalseQuestion", b =>
+                {
+                    b.HasOne("WeQuiz.Data.Models.Subcategory", "Subcategory")
+                        .WithMany("SuggestedTrueFalseQuestions")
+                        .HasForeignKey("SubcategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Subcategory");
                 });
 
             modelBuilder.Entity("WeQuiz.Data.Models.Teacher", b =>
@@ -892,6 +1074,12 @@ namespace WeQuiz.Data.Migrations
             modelBuilder.Entity("WeQuiz.Data.Models.Subcategory", b =>
                 {
                     b.Navigation("Questions");
+
+                    b.Navigation("SuggestedChoiceQuestions");
+
+                    b.Navigation("SuggestedExactAnswerQuestions");
+
+                    b.Navigation("SuggestedTrueFalseQuestions");
                 });
 
             modelBuilder.Entity("WeQuiz.Data.Models.Teacher", b =>

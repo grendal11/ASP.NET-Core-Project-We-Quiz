@@ -24,10 +24,13 @@
         public DbSet<Student> Students { get; init; }
         public DbSet<Subcategory> Subcategories { get; init; }
         public DbSet<SuggestedCategory> SuggestedCategories { get; init; }
+        public DbSet<SuggestedChoiceQuestion> SuggestedChoiceQuestions { get; init; }
+        public DbSet<SuggestedExactAnswerQuestion> SuggestedExactAnswerQuestions { get; init; }
         public DbSet<SuggestedSubcategory> SuggestedSubcategories { get; init; }
+        public DbSet<SuggestedTrueFalseQuestion> SuggestedTrueFalseQuestions { get; init; }
         public DbSet<Teacher> Teachers { get; init; }
         public DbSet<TeacherCategory> TeachersCategories { get; init; }
-        public DbSet<TrueFalseAnswer> trueFalseAnswers { get; init; }
+        public DbSet<TrueFalseAnswer> TrueFalseAnswers { get; init; }
 
 
         protected override void OnModelCreating(ModelBuilder builder)
