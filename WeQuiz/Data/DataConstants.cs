@@ -2,7 +2,15 @@
 {
     public class DataConstants
     {
-        public const int QuestionTypeMaxLength = 20;
+        public class Question
+        {
+            public const int QuestionTypeMaxLength = 20;
+            public const int TextMaxLength = 250;
+            public const int TextMinLength = 10;
+            public const int AnswerMaxLength = 100;
+            public const int AnswerMinLength = 2;
+        }
+
 
         public const int DescriptionMaxLength = 200;
 

@@ -94,10 +94,9 @@ namespace WeQuiz.Data.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    TeacherId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TeacherId = table.Column<int>(type: "int", nullable: false),
                     CategoryId = table.Column<int>(type: "int", nullable: false),
-                    IsApproved = table.Column<bool>(type: "bit", nullable: false),
-                    TeacherId1 = table.Column<int>(type: "int", nullable: true)
+                    IsApproved = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -109,11 +108,11 @@ namespace WeQuiz.Data.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_TeachersCategories_Teachers_TeacherId1",
-                        column: x => x.TeacherId1,
+                        name: "FK_TeachersCategories_Teachers_TeacherId",
+                        column: x => x.TeacherId,
                         principalTable: "Teachers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -155,9 +154,9 @@ namespace WeQuiz.Data.Migrations
                 column: "CategoryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_TeachersCategories_TeacherId1",
+                name: "IX_TeachersCategories_TeacherId",
                 table: "TeachersCategories",
-                column: "TeacherId1");
+                column: "TeacherId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

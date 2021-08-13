@@ -10,7 +10,7 @@ using WeQuiz.Data;
 namespace WeQuiz.Data.Migrations
 {
     [DbContext(typeof(WeQuizDbContext))]
-    [Migration("20210813191542_SchoolAdminsTeachersStudentsTables")]
+    [Migration("20210813192411_SchoolAdminsTeachersStudentsTables")]
     partial class SchoolAdminsTeachersStudentsTables
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -459,18 +459,14 @@ namespace WeQuiz.Data.Migrations
                     b.Property<bool>("IsApproved")
                         .HasColumnType("bit");
 
-                    b.Property<string>("TeacherId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("TeacherId1")
+                    b.Property<int>("TeacherId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
 
-                    b.HasIndex("TeacherId1");
+                    b.HasIndex("TeacherId");
 
                     b.ToTable("TeachersCategories");
                 });
@@ -705,11 +701,15 @@ namespace WeQuiz.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("WeQuiz.Data.Models.Teacher", null)
+                    b.HasOne("WeQuiz.Data.Models.Teacher", "Teacher")
                         .WithMany("TeachersCategories")
-                        .HasForeignKey("TeacherId1");
+                        .HasForeignKey("TeacherId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Category");
+
+                    b.Navigation("Teacher");
                 });
 
             modelBuilder.Entity("WeQuiz.Data.Models.Category", b =>

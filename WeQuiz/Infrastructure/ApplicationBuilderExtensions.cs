@@ -131,6 +131,13 @@
 
             foreach (var category in categories)
             {
+                subCategories.Add(new Subcategory
+                {
+                    Name = "Общи",
+                    SchoolId = 0,
+                    CategoryId = category.Id
+                });
+
                 if (category.Name != "Общи")
                 {
                     for (int i = 5; i <= 12; i++)

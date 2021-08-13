@@ -12,9 +12,12 @@
         }
 
         public DbSet<Category> Categories { get; init; }
+        public DbSet<ChoiceAnswer> ChoiceAnswers { get; init; }
         public DbSet<District> Districts { get; init; }
+        public DbSet<ExactAnswer> ExactAnswers { get; init; }
         public DbSet<PopulatedArea> PopulatedAreas { get; init; }
         public DbSet<QuestionType> QuestionTypes { get; init; }
+        public DbSet<Question> Questions { get; init; }
         public DbSet<School> Schools { get; init; }
         public DbSet<SchoolAdmin> SchoolAdmins { get; init; }
         public DbSet<SchoolRequest> SchoolRequests { get; init; }
@@ -24,6 +27,7 @@
         public DbSet<SuggestedSubcategory> SuggestedSubcategories { get; init; }
         public DbSet<Teacher> Teachers { get; init; }
         public DbSet<TeacherCategory> TeachersCategories { get; init; }
+        public DbSet<TrueFalseAnswer> trueFalseAnswers { get; init; }
 
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -54,6 +58,13 @@
                 .HasOne(s => s.Category)
                 .WithMany(s => s.SuggestedSubcategories)
                 .HasForeignKey(s => s.CategoryId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder
+                .Entity<Question>()
+                .HasOne(q => q.Subcategory)
+                .WithMany(q => q.Questions)
+                .HasForeignKey(q => q.SubcategoryId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder

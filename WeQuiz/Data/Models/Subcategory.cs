@@ -1,5 +1,6 @@
 ﻿namespace WeQuiz.Data.Models
 {
+    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
     using static DataConstants.Category;
@@ -16,5 +17,7 @@
 
         public int CategoryId { get; set; }
         public Category Category { get; set; }
+
+        public IEnumerable<Question> Questions { get; init; } = new List<Question>();
     }
 }
