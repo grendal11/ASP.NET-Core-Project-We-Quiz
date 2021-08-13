@@ -18,6 +18,12 @@
 
         public int PopulatedAreaId { get; set; }
         public PopulatedArea PopulatedArea { get; set; }
-       
+
+        public IEnumerable<SchoolAdmin> SchoolAdmins { get; init; } = new List<SchoolAdmin>();
+
+        public IEnumerable<Teacher> Teachers { get; init; } = new List<Teacher>();
+
+        public IEnumerable<Student> Students { get; init; } = new List<Student>();
+
     }
 }
