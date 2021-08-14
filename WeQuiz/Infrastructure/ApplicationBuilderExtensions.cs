@@ -1,34 +1,48 @@
 ﻿namespace WeQuiz.Infrastructure
 {
+    using System;
     using System.Linq;
-    using WeQuiz.Data;
+    using System.Threading.Tasks;
+    using System.Collections.Generic;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.AspNetCore.Identity;
+    using WeQuiz.Data;
     using WeQuiz.Data.Models;
-    using System.Collections.Generic;
+
+    using static WebConstants;
 
     public static class ApplicationBuilderExtensions
     {
         public static IApplicationBuilder PrepareDatabase(this IApplicationBuilder app)
         {
-            using var scopedServices = app.ApplicationServices.CreateScope();
+            using var serviceScope = app.ApplicationServices.CreateScope();
+            var services = serviceScope.ServiceProvider;
 
-            var data = scopedServices.ServiceProvider.GetService<WeQuizDbContext>();
+            MigrateDatabase(services);
 
-            data.Database.Migrate();
-
-            SeedDistricts(data);
-            SeedPopulatedAreas(data);
-            SeedCategories(data);
-            SeedSubcategories(data);
-            SeedQuestionTypes(data);
+            SeedDistricts(services);
+            SeedPopulatedAreas(services);
+            SeedCategories(services);
+            SeedSubcategories(services);
+            SeedQuestionTypes(services);
+            SeedAdministrator(services);
 
             return app;
         }
 
-        private static void SeedDistricts(WeQuizDbContext data)
+        private static void MigrateDatabase(IServiceProvider services) 
         {
+            var data = services.GetRequiredService<WeQuizDbContext>();
+
+            data.Database.Migrate();
+        }
+
+        private static void SeedDistricts(IServiceProvider services)
+        {
+            var data = services.GetRequiredService<WeQuizDbContext>();
+
             if (data.Districts.Any())
             {
                 return;
@@ -68,8 +82,10 @@
             data.SaveChanges();
         }
 
-        private static void SeedPopulatedAreas(WeQuizDbContext data)
+        private static void SeedPopulatedAreas(IServiceProvider services)
         {
+            var data = services.GetRequiredService<WeQuizDbContext>();
+
             if (data.PopulatedAreas.Any())
             {
                 return;
@@ -92,8 +108,10 @@
             data.SaveChanges();
         }
 
-        private static void SeedCategories(WeQuizDbContext data)
+        private static void SeedCategories(IServiceProvider services)
         {
+            var data = services.GetRequiredService<WeQuizDbContext>();
+
             if (data.Categories.Any())
             {
                 return;
@@ -118,8 +136,10 @@
             data.SaveChanges();
         }
 
-        private static void SeedSubcategories(WeQuizDbContext data)
+        private static void SeedSubcategories(IServiceProvider services)
         {
+            var data = services.GetRequiredService<WeQuizDbContext>();
+
             if (data.Subcategories.Any())
             {
                 return;
@@ -156,8 +176,10 @@
             data.SaveChanges();
         }
 
-        private static void SeedQuestionTypes(WeQuizDbContext data)
+        private static void SeedQuestionTypes(IServiceProvider services)
         {
+            var data = services.GetRequiredService<WeQuizDbContext>();
+
             if (data.QuestionTypes.Any())
             {
                 return;
@@ -171,6 +193,41 @@
             });
 
             data.SaveChanges();
+        }
+
+        private static void SeedAdministrator(IServiceProvider services)
+        {
+            var userManager = services.GetRequiredService<UserManager<User>>();
+            var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+
+            Task.Run(async () =>
+                {
+                    if (await roleManager.RoleExistsAsync(AdministratorRoleName))
+                    {
+                        return;
+                    }
+
+                    var adminRole = new IdentityRole { Name = AdministratorRoleName };
+                    await roleManager.CreateAsync(adminRole);
+
+                    const string adminEmail = "admin@wequiz.com";
+                    const string adminPassword = "admin123";
+
+                    var user = new User
+                    {
+                        Email = adminEmail,
+                        UserName = adminEmail,
+                        FullName = "Администратор",
+                        Alias = "Admin",
+                        SchoolId = 0
+                    };
+
+                    await userManager.CreateAsync(user, adminPassword);
+
+                    await userManager.AddToRoleAsync(user, adminRole.Name);
+                })
+                .GetAwaiter()
+                .GetResult();
         }
     }
 }
