@@ -26,7 +26,7 @@
             <div class="card-header text-white bg-secondary"><i class="far fa-list-alt"></i>&nbsp;&nbsp;Заявки за категории и подкатегории</div>
             <div class="card-body">
                 <p class="card-text">Ако искате да предлагате въпроси за категории/подкатегории, които все още не са налични в системата може да ги предложите от тук.</p>
-                <p class="card-text">Учениците и потребители, които все още не са присъединени към уилище могат да предлагат само подкатегории.</p>
+                <p class="card-text">Учениците и потребители, които все още не са присъединени към училище могат да предлагат само подкатегории.</p>
                 <a asp-controller="Categories" asp-action="All" class="btn btn-outline-primary btn-sm ml-2 float-right" role="button" aria-pressed="true">Налични категории и подкатегории</a>
                 <a asp-controller="Requests" asp-action="Subcategory" class="btn btn-outline-danger btn-sm ml-2 float-right" role="button" aria-pressed="true">Предложи подкатегория</a>
                 <a asp-controller="Requests" asp-action="Category" class="btn btn-outline-danger btn-sm ml-2 float-right" role="button" aria-pressed="true">Предложи категория</a>
@@ -35,11 +35,23 @@
     </div>
     <div class="col-sm-12 col-md-10 offset-md-1">
         <div class="card bg-light mb-3">
-            <div class="card-header text-white bg-secondary"><i class="fas fa-check"></i>&nbsp;&nbsp;Въпроси</div>
+            <div class="card-header text-white bg-secondary"><i class="fas fa-check"></i>&nbsp;&nbsp;Предложения за въпроси</div>
             <div class="card-body">
-                <h5 class="card-title">Light card title</h5>
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                <a asp-controller="Requests" asp-action="School" class="btn btn-secondary btn-sm btn-dark active float-right" role="button" aria-pressed="true">Заяви училище</a>
+                <p class="card-text">Учениците и потребители, които все още не са присъединени към училище могат да предлагат въпроси от тук.</p>
+                <p class="card-text">Можете да предлагате следните типове въпроси:</p>
+                <p class="card-text">
+                    Въпроси с избираеми отговори
+                    <a asp-controller="" asp-action="" class="btn btn-outline-danger btn-sm ml-2" role="button" aria-pressed="true"><i class="fas fa-crosshairs"></i> Добави</a>
+                </p>
+                <p class="card-text">
+                    Въпрос от типа "вярно/невярно"
+                    <a asp-controller="" asp-action="" class="btn btn-outline-danger btn-sm ml-2" role="button" aria-pressed="true"><i class="fas fa-check"></i> Добави</a>
+                </p>
+                <p class="card-text">
+                    Въпроси с точен отговор
+                    <a asp-controller="" asp-action="" class="btn btn-outline-danger btn-sm ml-2" role="button" aria-pressed="true"><i class="fas fa-list-ul"></i> Добави</a>
+                    <a asp-controller="" asp-action="" class="btn btn-outline-primary btn-sm ml-2 float-right" role="button" aria-pressed="true">Всички предложени от мен</a>
+                </p>
             </div>
         </div>
     </div>

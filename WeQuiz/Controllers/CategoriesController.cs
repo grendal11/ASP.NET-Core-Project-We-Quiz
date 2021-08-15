@@ -1,44 +1,28 @@
 ﻿namespace WeQuiz.Controllers
 {
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using System.Linq;
     using WeQuiz.Data;
-    using WeQuiz.Models.Categories;
+    using WeQuiz.Services.Categories;
 
     public class CategoriesController : Controller
     {
-        private readonly WeQuizDbContext data;
+        private readonly ICategoriesService categories;
 
-        public CategoriesController(WeQuizDbContext data)
+        public CategoriesController(ICategoriesService categories)
         {
-            this.data = data;
+            this.categories = categories;
         }
 
         public IActionResult All()
         {
-            var allCategories = this.data
-                .Subcategories
-                .Select(s => new AllCategoriesViewModel
-                {
-                    Category = s.Category.Name,
-                    Subcategory = s.Name,
-                    SchoolId = s.SchoolId,
-                })
-                .OrderBy(c => c.Category)
-                .ThenBy(c => c.Subcategory)
-                .ToList();
-
-            foreach (var cat in allCategories)
-            {
-                if (cat.SchoolId != 0)
-                {
-                    cat.SchoolName = this.data
-                        .Schools
-                        .First(s => s.Id == cat.SchoolId).Name;
-                }
-            }
+            var allCategories = categories.All();
 
             return View(allCategories);
         }
+
+        [Authorize]
+        public IActionResult Add() => View();
     }
 }

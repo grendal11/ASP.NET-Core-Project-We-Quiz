@@ -36,12 +36,14 @@
             return View(schools);
         }
 
+        [Authorize]
         public IActionResult Add() => View(new AddSchoolFormModel
         {
             Districts = this.GetDistricts()
         });
 
         [HttpPost]
+        [Authorize]
         public IActionResult Add(AddSchoolFormModel school)
         {
             if (!this.data.PopulatedAreas.Any(p => p.Id == school.PopulatedAreaId))
@@ -67,14 +69,16 @@
             data.SaveChanges();
 
             return RedirectToAction("All", "Schools");
-        }        
+        }
 
+        [Authorize]
         public IActionResult AddPopulatedArea() => View(new AddPopulatedAreaFormModel
         {
             Districts = this.GetDistricts()
         });
 
         [HttpPost]
+        [Authorize]
         public IActionResult AddPopulatedArea(AddPopulatedAreaFormModel populatedArea)
         {
             if (!this.data.Districts.Any(d => d.Id == populatedArea.DistrictId))

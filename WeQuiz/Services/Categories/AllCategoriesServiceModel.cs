@@ -1,6 +1,6 @@
-﻿namespace WeQuiz.Models.Categories
+﻿namespace WeQuiz.Services.Categories
 {
-    public class AllCategoriesViewModel
+    public class AllCategoriesServiceModel
     {
         public int Id { get; init; }
 

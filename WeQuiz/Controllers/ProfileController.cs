@@ -1,5 +1,6 @@
 ﻿namespace WeQuiz.Controllers
 {
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using System.Collections.Generic;
     using System.Linq;
@@ -17,6 +18,7 @@
             this.data = data;
         }
 
+        [Authorize]
         public IActionResult Info()
         {
             var userId = User.Id();
@@ -67,7 +69,7 @@
                     .ToList();
                 userInfo.Categories = categories;
             }
-;
+
             return View(userInfo);
         }
     }

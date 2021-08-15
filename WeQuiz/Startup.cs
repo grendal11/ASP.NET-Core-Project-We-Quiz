@@ -11,6 +11,7 @@ namespace WeQuiz
     using WeQuiz.Data;
     using WeQuiz.Data.Models;
     using WeQuiz.Infrastructure;
+    using WeQuiz.Services.Categories;
     using WeQuiz.Services.Statistics;
 
     public class Startup
@@ -46,6 +47,7 @@ namespace WeQuiz
             });
 
             services.AddTransient<IStatisticsService, StatisticsService>();
+            services.AddTransient<ICategoriesService, CategoriesService>();
         }
 
        

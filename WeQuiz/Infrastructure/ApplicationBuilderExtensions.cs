@@ -203,7 +203,7 @@
                     subCategories.Add(new Subcategory
                     {
                         Name = "ППМГ",
-                        SchoolId = 500102,
+                        SchoolId = 1,
                         CategoryId = category.Id
                     });
                 }

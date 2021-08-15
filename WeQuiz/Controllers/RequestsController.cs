@@ -1,5 +1,6 @@
 ﻿namespace WeQuiz.Controllers
 {
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using System.Collections.Generic;
     using System.Linq;
@@ -16,11 +17,14 @@
             this.data = data;
         }
 
+        [Authorize]
         public IActionResult All() => View();
 
+        [Authorize]
         public IActionResult School() => View();
 
         [HttpPost]
+        [Authorize]
         public IActionResult School(SchoolRequestFormModel school)
         {
             if (!ModelState.IsValid)
@@ -41,19 +45,17 @@
             return RedirectToAction("All", "Schools");
         }
 
-
+        [Authorize]
         public IActionResult Category() => View();
 
         [HttpPost]
+        [Authorize]
         public IActionResult Category(CategoryRequestFormModel category)
         {
             if (!ModelState.IsValid)
             {
                 return View(category);
             }
-
-            //var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            //var currentUser = this.data.Users.Find(userId);
 
             var newCategory = new SuggestedCategory
             {
@@ -68,12 +70,14 @@
             return RedirectToAction("All", "Requests");
         }
 
+        [Authorize]
         public IActionResult Subcategory() => View(new SubcategoryRequestFormModel
         {
             Categories = this.GetCategories()
         });
 
         [HttpPost]
+        [Authorize]
         public IActionResult Subcategory(SubcategoryRequestFormModel subCategory)
         {
             if (!this.data.Categories.Any(c => c.Id == subCategory.CategoryId))
@@ -113,6 +117,27 @@
                 SchoolId = c.SchoolId
             })
             .ToList();
+
+        [Authorize]
+        public IActionResult ChoiceQuestion() => View();
+
+        //[Authorize]
+        //[HttpPost]
+        //public IActionResult ChoiceQuestion() => View();
+
+        [Authorize]
+        public IActionResult TrueFalseQuestion() => View();
+
+        //[Authorize]
+        //[HttpPost]
+        //public IActionResult TrueFalseQuestion() => View();
+
+        [Authorize]
+        public IActionResult ExactAnswerQuestion() => View();
+
+        //[Authorize]
+        //[HttpPost]
+        //public IActionResult ExactAnswerQuestion() => View();
 
     }
 }

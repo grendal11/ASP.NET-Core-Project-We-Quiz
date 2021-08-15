@@ -1,9 +1,6 @@
 ﻿namespace WeQuiz.Services.Statistics
 {
-    using System;
-    using System.Collections.Generic;
     using System.Linq;
-    using System.Threading.Tasks;
     using WeQuiz.Data;
 
     public class StatisticsService : IStatisticsService
