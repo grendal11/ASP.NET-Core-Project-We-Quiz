@@ -1,9 +1,6 @@
 ﻿namespace WeQuiz.Controllers
 {
-    using System.Diagnostics;
-    using WeQuiz.Models;
     using Microsoft.AspNetCore.Mvc;
-    using WeQuiz.Infrastructure;
 
     public class HomeController : Controller
     {

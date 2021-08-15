@@ -1,0 +1,51 @@
+﻿@model ProfileViewModel
+
+@{
+    ViewBag.Title = "Информация за потребителя";
+}
+
+<div class="row">
+    <div class="col-sm-12 col-md-10 offset-md-1">
+        <div class="card bg-light mb-3">
+            <div class="card-header text-white bg-secondary"><i class="fas fa-user-alt"></i>&nbsp;&nbsp;Информация за профила</div>
+            <div class="card-body">
+                <p class="card-header">Пълно име: @Model.FullName</p>
+                <p class="card-header">E-mail адрес: @Model.Email</p>
+                <p class="card-header">Име в системата (nickname): @Model.Alias</p>
+                <p class="card-header">Училище: @Model.SchoolName</p>
+                @if (Model.SchoolName != "")
+                {
+                    <p class="card-header">Роля в училище: @Model.RoleName</p>
+                }
+                <a class="btn btn-outline-primary btn-sm ml-2 mt-2 float-right" aria-pressed="true" role="button" id="butonInfo">Виж статистики</a>
+                <a asp-controller="Profile" asp-action="Edit" asp-route-id="@Model.UserId" class="btn btn-outline-danger btn-sm ml-2 mt-2 float-right" role="button" aria-pressed="true">Редактиране</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row d-none" id="info">
+    <div class="col-sm-12 col-md-10 offset-md-1">
+        <div class="card bg-light mb-3">
+            <div class="card-header text-white bg-secondary"><i class="fas fa-chart-line"></i>&nbsp;&nbsp;Статистики</div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-6">
+                        <p class="card-header">Предложени въпроси: </p>
+                        <p class="card-header">Одобрени въпроси: </p>
+                    </div>
+                    <div class="col-6">
+                        <p class="card-header">Резултат от тестове: </p>
+                        <p class="card-header">Резултат от моментни тестове: </p>
+                    </div>
+                </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+        $("#butonInfo").click(function () {
+            $("#info").removeClass('d-none');
+        });
+    </script>
+}

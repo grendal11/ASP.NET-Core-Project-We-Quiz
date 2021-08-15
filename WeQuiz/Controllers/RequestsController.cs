@@ -3,7 +3,6 @@
     using Microsoft.AspNetCore.Mvc;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Security.Claims;
     using WeQuiz.Data;
     using WeQuiz.Data.Models;
     using WeQuiz.Models.Requests;
