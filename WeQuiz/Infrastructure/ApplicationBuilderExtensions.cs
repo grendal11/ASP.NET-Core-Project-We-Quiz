@@ -36,7 +36,7 @@
             return app;
         }
 
-        private static void MigrateDatabase(IServiceProvider services) 
+        private static void MigrateDatabase(IServiceProvider services)
         {
             var data = services.GetRequiredService<WeQuizDbContext>();
 
@@ -123,9 +123,9 @@
 
             var populatedAreaId = data.PopulatedAreas.First(p => p.Name == "Видин").Id;
 
-            data.Schools.Add(new School 
+            data.Schools.Add(new School
             {
-                PopulatedAreaId=populatedAreaId,
+                PopulatedAreaId = populatedAreaId,
                 Name = "ППМГ Екзарх Антим I",
                 SchoolCode = 500102
             });
@@ -196,7 +196,7 @@
                     }
                 }
 
-                if (category.Name == "Информатика" || 
+                if (category.Name == "Информатика" ||
                     category.Name == "Информационни технологии" ||
                     category.Name != "Общи")
                 {
@@ -304,7 +304,7 @@
             })
                 .GetAwaiter()
                 .GetResult();
-        }        
+        }
 
         private static void SeedTeacher(IServiceProvider services)
         {
@@ -340,6 +340,33 @@
                 await userManager.CreateAsync(user, teacherPassword);
 
                 await userManager.AddToRoleAsync(user, teacherRole.Name);
+
+                var userId = data.Users.First(u => u.Email == teacherEmail).Id;
+
+                var categoryId = data.Categories.First(c => c.Name == "Общи").Id;
+
+                var newTeacher = new Teacher
+                {
+                    UserId = userId,
+                    SchoolId = schoolId,
+                    IsApproved = true
+                };
+
+                data.Teachers.Add(newTeacher);
+                data.SaveChanges();
+
+                var teacherId = data.Teachers.First(t => t.UserId == userId).Id;
+
+                var teacherCategory = new TeacherCategory
+                {
+                    TeacherId = teacherId,
+                    CategoryId = categoryId,
+                    IsApproved = true
+                };
+
+                data.TeachersCategories.Add(teacherCategory);
+                data.SaveChanges();
+
             })
                 .GetAwaiter()
                 .GetResult();
@@ -379,6 +406,20 @@
                 await userManager.CreateAsync(user, studentPassword);
 
                 await userManager.AddToRoleAsync(user, studentRole.Name);
+
+                var userId = data.Users.First(u => u.Email == studentEmail).Id;
+
+                var newStudent = new Student 
+                {
+                    UserId=userId,
+                    Class=10,
+                    SchoolId=schoolId,
+                    IsApproved=true
+                };
+
+                data.Students.Add(newStudent);
+                data.SaveChanges();
+
             })
                 .GetAwaiter()
                 .GetResult();

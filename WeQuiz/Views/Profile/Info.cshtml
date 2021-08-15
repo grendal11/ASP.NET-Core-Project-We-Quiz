@@ -9,15 +9,40 @@
         <div class="card bg-light mb-3">
             <div class="card-header text-white bg-secondary"><i class="fas fa-user-alt"></i>&nbsp;&nbsp;Информация за профила</div>
             <div class="card-body">
-                <p class="card-header">Пълно име: @Model.FullName</p>
-                <p class="card-header">E-mail адрес: @Model.Email</p>
-                <p class="card-header">Име в системата (nickname): @Model.Alias</p>
-                <p class="card-header">Училище: @Model.SchoolName</p>
-                @if (Model.SchoolName != "")
-                {
-                    <p class="card-header">Роля в училище: @Model.RoleName</p>
-                }
+                <div class="row">
+                    <div class="col-md-6 card-header col-sm-12">
+                        <p class="card-header">Пълно име: <strong>@Model.FullName</strong></p>
+                        <p class="card-header">E-mail адрес: <strong>@Model.Email</strong></p>
+                        <p class="card-header">Име в системата (nickname): <strong>@Model.Alias</strong></p>
+                        <p class="card-header">Училище: <strong>@Model.SchoolName</strong></p>
+                    </div>
+                    <div class="col-md-6 card-header col-sm-12">
+                        @if (Model.SchoolName != "")
+                        {
+                            <p class="card-header">Роля в училище: <strong>@Model.RoleName</strong></p>
+                        }
+                        @if (Model.RoleName == "Ученик")
+                        {
+                            <p class="card-header">
+                                Клас: <strong>@Model.Class</strong>
+                            </p>
+                        }
+                        @if (Model.RoleName == "Учител")
+                        {
+                            <div class="card-header">
+                                Предмети:
+                                <ul>
+                                    @foreach (var category in Model.Categories)
+                                    {
+                                        <li>@category.Name</li>
+                                    }
+                                </ul>
+                            </div>
+                        }
+                    </div>
+                </div>
                 <a class="btn btn-outline-primary btn-sm ml-2 mt-2 float-right" aria-pressed="true" role="button" id="butonInfo">Виж статистики</a>
+                <input type="hidden" id="userId" value="@Model.UserId" />
                 <a asp-controller="Profile" asp-action="Edit" asp-route-id="@Model.UserId" class="btn btn-outline-danger btn-sm ml-2 mt-2 float-right" role="button" aria-pressed="true">Редактиране</a>
             </div>
         </div>
@@ -30,21 +55,33 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-6">
-                        <p class="card-header">Предложени въпроси: </p>
-                        <p class="card-header">Одобрени въпроси: </p>
+                        <p class="card-header" id="suggested"></p>
+                        <p class="card-header" id="approved"></p>
                     </div>
                     <div class="col-6">
-                        <p class="card-header">Резултат от тестове: </p>
-                        <p class="card-header">Резултат от моментни тестове: </p>
+                        <p class="card-header" id="tests"></p>
+                        <p class="card-header" id="instant"></p>
                     </div>
                 </div>
+            </div>
         </div>
     </div>
 </div>
 
 @section Scripts{
     <script>
-        $("#butonInfo").click(function () {
+        $('#butonInfo').on('click', ev => {
+            $.get(`/api/statistics/${$("#userId").val}`, (data) => {
+                console.log(data);
+                $('#suggested').text = '';
+                $('#suggested').append(`Предложени въпроси: ${data.sugestedQuestions}`);
+                $('#approved').text = '';
+                $('#approved').append(`Одобрени въпроси: ${data.approvedQuestions}`);
+                $('#tests').text = '';
+                $('#tests').append(`Резултат от тестове: ${data.averageTestsResult}`);
+                $('#instant').text = '';
+                $('#instant').append(`Резултат от моментни тестове: ${data.averageInstantTestsResult}`);
+            });
             $("#info").removeClass('d-none');
         });
     </script>

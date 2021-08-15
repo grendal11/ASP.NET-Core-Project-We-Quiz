@@ -26,5 +26,25 @@
                 TotalQuestions = totalQuestions
             };
         }
+
+        public UserStaticsicsServiceModel UserStaticsics(string userId)
+        {
+            var suggestedQuestions =
+                this.data.SuggestedChoiceQuestions.Count(q => q.UserId == userId) + this.data.SuggestedExactAnswerQuestions.Count(q => q.UserId == userId) + this.data.SuggestedTrueFalseQuestions.Count(q => q.UserId == userId);
+
+            var approvedQuestions =
+                this.data.SuggestedChoiceQuestions
+                .Count(q => q.UserId == userId && q.Status == true) + this.data.SuggestedExactAnswerQuestions
+                .Count(q => q.UserId == userId && q.Status == true) + this.data.SuggestedTrueFalseQuestions
+                .Count(q => q.UserId == userId && q.Status == true);
+
+            return new UserStaticsicsServiceModel
+            {
+                SugestedQuestions = suggestedQuestions,
+                ApprovedQuestions = approvedQuestions,
+                AverageTestsResult = 0,
+                AverageInstantTestsResult = 0
+            };
+        }
     }
 }

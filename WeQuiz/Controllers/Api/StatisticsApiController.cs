@@ -16,6 +16,9 @@
         public StatisticsApiController(IStatisticsService statistics)
            => this.statistics = statistics;
 
-
+        [HttpGet]
+        [Route("{id}")]
+        public UserStaticsicsServiceModel UserStatistics(string userId)
+         => this.statistics.UserStaticsics(userId);
     }
 }

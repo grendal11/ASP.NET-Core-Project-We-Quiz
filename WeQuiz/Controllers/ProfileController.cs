@@ -1,10 +1,12 @@
 ﻿namespace WeQuiz.Controllers
 {
     using Microsoft.AspNetCore.Mvc;
+    using System.Collections.Generic;
     using System.Linq;
     using WeQuiz.Data;
     using WeQuiz.Infrastructure;
     using WeQuiz.Models.Profile;
+    using WeQuiz.Views.Profile;
 
     public class ProfileController : Controller
     {
@@ -35,7 +37,7 @@
             {
                 roleName = "Учител";
             }
-            else if (User.IsSchoolAdmin())
+            else if (User.IsStudent())
             {
                 roleName = "Ученик";
             }
@@ -48,9 +50,24 @@
                 FullName = user.FullName,
                 Alias = user.Alias,
                 SchoolName = this.data.Schools.Find(user.SchoolId).Name,
-                RoleName = roleName
+                RoleName = roleName,
+                Class = User.IsStudent() ?
+                    data.Students.First(s => s.UserId == userId).Class : 0
             };
 
+            if (User.IsTeacher())
+            {
+                var teacherId = data.Teachers.First(t => t.UserId == userId).Id;
+                var categories = data.TeachersCategories
+                    .Where(t=>t.TeacherId == teacherId)
+                    .Select(c => new CategoryViewModel
+                    { 
+                       Name = c.Category.Name
+                    })
+                    .ToList();
+                userInfo.Categories = categories;
+            }
+;
             return View(userInfo);
         }
     }

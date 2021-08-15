@@ -1,9 +1,7 @@
 ﻿namespace WeQuiz.Models.Profile
 {
-    using System;
     using System.Collections.Generic;
-    using System.Linq;
-    using System.Threading.Tasks;
+    using WeQuiz.Views.Profile;
 
     public class ProfileViewModel
     {
@@ -15,8 +13,12 @@
 
         public string Alias { get; init; }
 
-        public string SchoolName { get; set; }
+        public string SchoolName { get; init; }
 
-        public string RoleName { get; set; }
+        public string RoleName { get; init; }
+
+        public int Class { get; set; }
+
+        public IEnumerable<CategoryViewModel> Categories { get; set; } 
     }
 }
