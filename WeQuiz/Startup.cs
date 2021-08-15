@@ -11,6 +11,7 @@ namespace WeQuiz
     using WeQuiz.Data;
     using WeQuiz.Data.Models;
     using WeQuiz.Infrastructure;
+    using WeQuiz.Services.Statistics;
 
     public class Startup
     {
@@ -43,6 +44,8 @@ namespace WeQuiz
             {
                 options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>();
             });
+
+            services.AddTransient<IStatisticsService, StatisticsService>();
         }
 
        

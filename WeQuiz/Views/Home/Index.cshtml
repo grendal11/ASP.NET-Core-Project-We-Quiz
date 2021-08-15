@@ -1,10 +1,13 @@
-﻿@{
+﻿@model TotalsServiceModel
+
+@{
     ViewBag.Title = "Home Page";
 }
 
 
 @if (!User.Identity.IsAuthenticated)
 {
+    
     <div class="jumbotron mt-4 text-center bg-secondary text-white">
         <h1 class="display-4" style="font-family: 'Kristen ITC'">
             <span class="text-warning">W</span>e <span class="text-warning">Q</span>uiz
@@ -15,9 +18,9 @@
     </div>
     <div class="card-body text-center text-white" style="background-color:orange">
         <div class="row mt-3 mb-3">
-            <h2 class="display-6 col-4">10 училища</h2>
-            <h2 class="display-6 col-4">134 потребители</h2>
-            <h2 class="display-6 col-4">3455 въпроси</h2>
+            <h2 class="display-6 col-4">@Model.TotalSchools училища</h2>
+            <h2 class="display-6 col-4">@Model.TotalUsers потребители</h2>
+            <h2 class="display-6 col-4">@Model.TotalQuestions въпроси</h2>
         </div>
     </div>
 }
