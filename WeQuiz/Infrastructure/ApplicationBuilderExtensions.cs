@@ -1,4 +1,5 @@
-﻿namespace WeQuiz.Infrastructure
+﻿
+namespace WeQuiz.Infrastructure
 {
     using System;
     using System.Linq;
@@ -11,7 +12,9 @@
     using WeQuiz.Data;
     using WeQuiz.Data.Models;
 
-    using static WebConstants;
+
+    using static WeQuiz.WebConstants;
+    using static WeQuiz.Areas.Admin.AdminConstants;
 
     public static class ApplicationBuilderExtensions
     {
@@ -409,12 +412,12 @@
 
                 var userId = data.Users.First(u => u.Email == studentEmail).Id;
 
-                var newStudent = new Student 
+                var newStudent = new Student
                 {
-                    UserId=userId,
-                    Class=10,
-                    SchoolId=schoolId,
-                    IsApproved=true
+                    UserId = userId,
+                    Class = 10,
+                    SchoolId = schoolId,
+                    IsApproved = true
                 };
 
                 data.Students.Add(newStudent);

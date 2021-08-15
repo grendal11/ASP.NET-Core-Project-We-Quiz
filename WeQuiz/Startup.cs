@@ -76,6 +76,7 @@ namespace WeQuiz
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapDefaultAreaRoute();
                 endpoints.MapDefaultControllerRoute();
                 endpoints.MapRazorPages();
             });
