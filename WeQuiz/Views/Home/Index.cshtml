@@ -2,7 +2,31 @@
     ViewBag.Title = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+
+@if (!User.Identity.IsAuthenticated)
+{
+    <div class="jumbotron mt-4 text-center bg-secondary text-white">
+        <h1 class="display-4" style="font-family: 'Kristen ITC'">
+            <span class="text-warning">W</span>e <span class="text-warning">Q</span>uiz
+        </h1>
+        <hr class="my-4 w-75 border-white">
+        <h2 class="display-6">Най-бързо растящата банка с въпроси.</h2>
+        <a href="/Identity/Account/Login" class="btn btn-outline-warning btn-lg mt-4" role="button">Вход в системата</a>
+    </div>
+    <div class="card-body text-center text-white" style="background-color:orange">
+        <div class="row mt-3 mb-3">
+            <h2 class="display-6 col-4">10 училища</h2>
+            <h2 class="display-6 col-4">134 потребители</h2>
+            <h2 class="display-6 col-4">3455 въпроси</h2>
+        </div>
+    </div>
+}
+else
+{
+    var role = "";
+    if (User.IsAdmin()) role = "Administrator";
+    if (User.IsSchoolAdmin()) role = "SchoolAdmin";
+    if (User.IsTeacher()) role = "Teacher";
+    if (User.IsStudent()) role = "Student";
+    <h2>Hello @role</h2> 
+}

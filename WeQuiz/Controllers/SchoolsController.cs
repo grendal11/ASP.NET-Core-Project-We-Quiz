@@ -7,6 +7,7 @@
     using Microsoft.AspNetCore.Mvc;
     using System.Linq;
     using WeQuiz.Data.Models;
+    using Microsoft.AspNetCore.Authorization;
 
     public class SchoolsController : Controller
     {
@@ -17,6 +18,7 @@
             this.data = data;
         }
 
+        [Authorize]
         public IActionResult All()
         {
             var schools = this.data

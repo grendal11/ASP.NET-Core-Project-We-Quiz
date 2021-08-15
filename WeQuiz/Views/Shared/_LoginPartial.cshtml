@@ -8,7 +8,7 @@
     @if (SignInManager.IsSignedIn(User))
     {
         var userId = User.Id();
-        var userIsAdmin = User.IsInRole(WebConstants.AdministratorRoleName);
+        var userIsAdmin = User.IsAdmin();
 
         @if (!userIsAdmin)
         {

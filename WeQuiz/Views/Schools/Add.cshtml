@@ -4,7 +4,7 @@
     ViewBag.Title = "Добавяне на училище";
 }
 
-<h1 class="text-center"->@ViewBag.Title</h1>
+<h1 class="text-center" ->@ViewBag.Title</h1>
 <br />
 <form method="post" class="col-lg-6 offset-lg-3 col-sm-12 col-md-8 offset-md-2">
     <div class="form-group">
@@ -23,7 +23,7 @@
         </select>
         <span asp-validation-for="PopulatedAreaId" class="small text-danger"></span>
         <a asp-controller="Schools" asp-action="AddPopulatedArea" class="float-right">
-          Добави населено място
+            Добави населено място
         </a>
     </div>
     <div class="form-group">
@@ -43,19 +43,22 @@
 </form>
 
 @section Scripts {
-<script src="~/lib/jquery/dist/jquery.min.js"></script>
-<script>
-    $(document).ready(function () {
-        $("#DistrictId").change(function () {
-            $.get("/Schools/GetPopulatedAreas", { districtId: $("#DistrictId").val() },
-                function (data) {
-                    $("#PopulatedAreaId").empty();
-                    $.each(data, function (index, row) {
-                        $("#PopulatedAreaId")
-                            .append("<option value='"+row.id+"'>"+row.name+"</option>")
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#DistrictId").change(function () {
+                $.get("/Schools/GetPopulatedAreas", { districtId: $("#DistrictId").val() },
+                    function (data) {
+                        $("#PopulatedAreaId").empty();
+                        $.each(data, function (index, row) {
+                            $("#PopulatedAreaId")
+                                .append("<option value='" + row.id + "'>" + row.name + "</option>")
+                        });
                     });
-                });
-        })
-    });
-</script>
+            })
+        });
+    </script>
+
+    <partial name="_ValidationScriptsPartial" />
 }
+

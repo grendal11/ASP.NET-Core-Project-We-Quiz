@@ -9,6 +9,7 @@
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.RazorPages;
     using Microsoft.Extensions.Logging;
+    using WeQuiz.Infrastructure;
 
     [AllowAnonymous]
     public class LoginModel : PageModel
@@ -75,7 +76,7 @@
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    ModelState.AddModelError(string.Empty, "Некоректни входни данни.");
                     
                     return Page();
                 }

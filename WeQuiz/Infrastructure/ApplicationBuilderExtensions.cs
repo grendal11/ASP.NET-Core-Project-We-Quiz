@@ -24,10 +24,14 @@
 
             SeedDistricts(services);
             SeedPopulatedAreas(services);
+            SeedSchool(services);
             SeedCategories(services);
             SeedSubcategories(services);
             SeedQuestionTypes(services);
             SeedAdministrator(services);
+            SeedSchoolAdmin(services);
+            SeedTeacher(services);
+            SeedStudent(services);
 
             return app;
         }
@@ -108,6 +112,27 @@
             data.SaveChanges();
         }
 
+        private static void SeedSchool(IServiceProvider services)
+        {
+            var data = services.GetRequiredService<WeQuizDbContext>();
+
+            if (data.Schools.Any())
+            {
+                return;
+            }
+
+            var populatedAreaId = data.PopulatedAreas.First(p => p.Name == "Видин").Id;
+
+            data.Schools.Add(new School 
+            {
+                PopulatedAreaId=populatedAreaId,
+                Name = "ППМГ Екзарх Антим I",
+                SchoolCode = 500102
+            });
+
+            data.SaveChanges();
+        }
+
         private static void SeedCategories(IServiceProvider services)
         {
             var data = services.GetRequiredService<WeQuizDbContext>();
@@ -170,6 +195,18 @@
                         });
                     }
                 }
+
+                if (category.Name == "Информатика" || 
+                    category.Name == "Информационни технологии" ||
+                    category.Name != "Общи")
+                {
+                    subCategories.Add(new Subcategory
+                    {
+                        Name = "ППМГ",
+                        SchoolId = 500102,
+                        CategoryId = category.Id
+                    });
+                }
             }
 
             data.Subcategories.AddRange(subCategories);
@@ -210,7 +247,7 @@
                     var adminRole = new IdentityRole { Name = AdministratorRoleName };
                     await roleManager.CreateAsync(adminRole);
 
-                    const string adminEmail = "admin@wequiz.com";
+                    const string adminEmail = "admin@wequiz.bg";
                     const string adminPassword = "admin123";
 
                     var user = new User
@@ -226,6 +263,123 @@
 
                     await userManager.AddToRoleAsync(user, adminRole.Name);
                 })
+                .GetAwaiter()
+                .GetResult();
+        }
+
+        private static void SeedSchoolAdmin(IServiceProvider services)
+        {
+            var userManager = services.GetRequiredService<UserManager<User>>();
+            var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+
+            var data = services.GetRequiredService<WeQuizDbContext>();
+
+            var schoolId = data.Schools.First(s => s.SchoolCode == 500102).Id;
+
+            Task.Run(async () =>
+            {
+                if (await roleManager.RoleExistsAsync(SchoolAdminRoleName))
+                {
+                    return;
+                }
+
+                var schoolAdminRole = new IdentityRole { Name = SchoolAdminRoleName };
+                await roleManager.CreateAsync(schoolAdminRole);
+
+                const string schoolAdminEmail = "sadmin@wequiz.bg";
+                const string schoolAdminPassword = "sadmin123";
+
+                var user = new User
+                {
+                    Email = schoolAdminEmail,
+                    UserName = schoolAdminEmail,
+                    FullName = "Училищен администратор",
+                    Alias = "SchoolAdmin",
+                    SchoolId = schoolId
+                };
+
+                await userManager.CreateAsync(user, schoolAdminPassword);
+
+                await userManager.AddToRoleAsync(user, schoolAdminRole.Name);
+            })
+                .GetAwaiter()
+                .GetResult();
+        }        
+
+        private static void SeedTeacher(IServiceProvider services)
+        {
+            var userManager = services.GetRequiredService<UserManager<User>>();
+            var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+
+            var data = services.GetRequiredService<WeQuizDbContext>();
+
+            var schoolId = data.Schools.First(s => s.SchoolCode == 500102).Id;
+
+            Task.Run(async () =>
+            {
+                if (await roleManager.RoleExistsAsync(TeacherRoleName))
+                {
+                    return;
+                }
+
+                var teacherRole = new IdentityRole { Name = TeacherRoleName };
+                await roleManager.CreateAsync(teacherRole);
+
+                const string teacherEmail = "teacher@wequiz.bg";
+                const string teacherPassword = "teacher123";
+
+                var user = new User
+                {
+                    Email = teacherEmail,
+                    UserName = teacherEmail,
+                    FullName = "Учител",
+                    Alias = "Teacher",
+                    SchoolId = schoolId
+                };
+
+                await userManager.CreateAsync(user, teacherPassword);
+
+                await userManager.AddToRoleAsync(user, teacherRole.Name);
+            })
+                .GetAwaiter()
+                .GetResult();
+        }
+
+        private static void SeedStudent(IServiceProvider services)
+        {
+            var userManager = services.GetRequiredService<UserManager<User>>();
+            var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+
+            var data = services.GetRequiredService<WeQuizDbContext>();
+
+            var schoolId = data.Schools.First(s => s.SchoolCode == 500102).Id;
+
+            Task.Run(async () =>
+            {
+                if (await roleManager.RoleExistsAsync(StudentRoleName))
+                {
+                    return;
+                }
+
+                var studentRole = new IdentityRole { Name = StudentRoleName };
+                await roleManager.CreateAsync(studentRole);
+
+                const string studentEmail = "student@wequiz.bg";
+                const string studentPassword = "student123";
+
+                var user = new User
+                {
+                    Email = studentEmail,
+                    UserName = studentEmail,
+                    FullName = "Ученик",
+                    Alias = "Student",
+                    SchoolId = schoolId
+                };
+
+                await userManager.CreateAsync(user, studentPassword);
+
+                await userManager.AddToRoleAsync(user, studentRole.Name);
+            })
                 .GetAwaiter()
                 .GetResult();
         }

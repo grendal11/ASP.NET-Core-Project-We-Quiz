@@ -21,6 +21,7 @@
         [Display(Name = "Област")]
         public int DistrictId { get; init; }
 
+        [Required(ErrorMessage = "Изберете населено място")]
         [Display(Name = "Населено място")]
         public int PopulatedAreaId { get; init; }
 
