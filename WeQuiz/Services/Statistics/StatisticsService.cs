@@ -10,6 +10,7 @@
         public StatisticsService(WeQuizDbContext data)
             => this.data = data;
 
+
         public TotalsServiceModel Totals()
         {
             var totalSchools = this.data.Schools.Count();
@@ -41,6 +42,26 @@
                 ApprovedQuestions = approvedQuestions,
                 AverageTestsResult = 0,
                 AverageInstantTestsResult = 0
+            };
+        }
+
+        public TotalCategoriesServiceModel CategoriesStatistics()
+        {
+            var totalCategories = data.Categories.Count();
+            var publicCategories = data.Categories.Count(c=>c.SchoolId==0);
+            var pendingCategories = data.SuggestedCategories.Count();
+            var totalSubcategories = data.Subcategories.Count();
+            var publicSubcategories = data.Subcategories.Count(c => c.SchoolId == 0);
+            var pendingSubcategories = data.SuggestedSubcategories.Count();
+
+            return new TotalCategoriesServiceModel
+            {
+                TotalCategories = totalCategories,
+                PublicCategories = publicCategories,
+                PendingCategories = pendingCategories,
+                TotalSubcategories = totalSubcategories,
+                PublicSubcategories = publicSubcategories,
+                PendingSubcategories = pendingSubcategories
             };
         }
     }

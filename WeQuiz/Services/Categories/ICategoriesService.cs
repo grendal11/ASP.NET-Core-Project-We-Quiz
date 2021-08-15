@@ -4,6 +4,10 @@
 
     public interface ICategoriesService
     {
+        IEnumerable<MainCategoriesServiceModel> MainCategories();
+
         IEnumerable<AllCategoriesServiceModel> All();
+
+        void Add(CategoryServiceModel category);
     }
 }

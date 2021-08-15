@@ -1,0 +1,32 @@
+﻿@model TotalCategoriesServiceModel
+
+@{
+    ViewBag.Title = "Категории";
+}
+
+<div class="row justify-content-center">
+    <div class="card mt-3 mb-3 text-center text-white w-75" style="background-color:orange">
+        <div class="row">
+            <div class="col-md-6 col-sm-12 mt-3 mb-3">
+                <h3>Категории</h3>
+                <hr class="text-white" />
+                <h5 class="display-6">@Model.TotalCategories общо</h5>
+                <h5 class="display-6">@Model.PublicCategories публични </h5>
+                <h5 class="display-6">@Model.PendingCategories чакащи одобрение</h5>
+            </div>
+            <div class="col-md-6 col-sm-12 mt-3 mb-3">
+                <h3>Подкатегории</h3>
+                <hr class="text-white" />
+                <h5 class="display-6">@Model.TotalSubcategories общо</h5>
+                <h5 class="display-6">@Model.PublicSubcategories публични </h5>
+                <h5 class="display-6">@Model.PendingSubcategories чакащи одобрение</h5>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row justify-content-center pt-3 pb-3">
+    <a asp-area="Admin" asp-controller="Categories" asp-action="All" class="btn btn-outline-primary btn-sm ml-2" role="button" aria-pressed="true">Всички категории</a>
+    <a asp-area="Admin" asp-controller="Categories" asp-action="Pending" class="btn btn-outline-danger btn-sm ml-2" role="button" aria-pressed="true">Чакащи одобрение</a>
+    <a asp-area="Admin" asp-controller="Categories" asp-action="Add" class="btn btn-outline-danger btn-sm ml-2" role="button" aria-pressed="true">Добави категория</a>
+  </div>

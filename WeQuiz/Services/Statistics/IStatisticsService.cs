@@ -5,5 +5,7 @@
         TotalsServiceModel Totals();
 
         UserStaticsicsServiceModel UserStaticsics(string userId);
+
+        TotalCategoriesServiceModel CategoriesStatistics();
     }
 }
