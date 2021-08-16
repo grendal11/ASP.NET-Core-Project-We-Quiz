@@ -39,12 +39,33 @@
             var newCategory = new CategoryServiceModel
             {   
                 Name=category.Name,
-                SchoolId=category.SchoolId
+                SchoolCode = category.SchoolCode
             };
 
             this.categories.Add(newCategory);
 
             return Redirect("/Admin/Categories/All");
+        }
+
+        public IActionResult Pending()
+        {
+            var pendingCategories = this.categories.PendingCategories();
+
+            return View(pendingCategories);
+        }
+
+        public IActionResult Approve(int id)
+        {
+            categories.ApproveCategory(id);
+
+            return Redirect("/Admin/Categories/Pending");
+        }
+
+        public IActionResult Deny(int id)
+        {
+            categories.DenyCategory(id);
+
+            return Redirect("/Admin/Categories/Pending");
         }
     }
 }

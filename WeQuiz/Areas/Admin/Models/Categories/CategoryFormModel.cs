@@ -10,7 +10,7 @@
         [Display(Name = "Наименование на категорията")]
         public string Name { get; init; }
 
-        [Display(Name = "ID на училище в базата")]
-        public int SchoolId { get; init; }
+        [Display(Name = "Код по НЕИСПУО")]
+        public int SchoolCode { get; init; }
     }
 }

@@ -4,6 +4,6 @@
     {
         public string Name { get; init; }
 
-        public int SchoolId { get; init; }
+        public int SchoolCode { get; init; }
     }
 }

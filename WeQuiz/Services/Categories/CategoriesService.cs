@@ -18,7 +18,7 @@
                 .Categories
                 .Select(c => new MainCategoriesServiceModel
                 {
-                    Category = c.Name,                    
+                    Category = c.Name,
                     SchoolId = c.SchoolId,
                 })
                 .OrderBy(c => c.Category)
@@ -64,15 +64,75 @@
             return allCategories;
         }
 
+        public IEnumerable<PendingCategoryServiceModel> PendingCategories()
+        {
+            var pendingCategories = this.data
+               .SuggestedCategories
+               .Select(c => new PendingCategoryServiceModel
+               {
+                   Id=c.Id,
+                   Name = c.Name,
+                   Description=c.Description,
+                   SchoolId=c.SchoolId
+               })
+               .OrderBy(c => c.Name)
+               .ToList();
+
+            foreach (var cat in pendingCategories)
+            {
+                if (cat.SchoolId != 0)
+                {
+                    var school = data.Schools.FirstOrDefault(s => s.Id == cat.SchoolId);
+
+                    cat.SchoolName = school==null ? "" : school.Name;
+                }
+            }
+
+            return pendingCategories;
+        }
+
         public void Add(CategoryServiceModel category)
         {
-            data.Categories.Add(new Category 
+            var school = data.Schools
+                .FirstOrDefault(s => s.SchoolCode == category.SchoolCode);
+
+            data.Categories.Add(new Category
             {
                 Name = category.Name,
-                SchoolId = category.SchoolId                
+                SchoolId = school == null ? 0 : school.Id
             });
 
             data.SaveChanges();
         }
+
+        public void ApproveCategory(int id)
+        {
+            var categoryToApprove = data.SuggestedCategories.Find(id);
+
+            if (categoryToApprove !=null)
+            {
+                var newCategory = new Category
+                { 
+                    Name=categoryToApprove.Name,
+                    SchoolId=categoryToApprove.SchoolId                    
+                };
+
+                data.Categories.Add(newCategory);
+                data.SuggestedCategories.Remove(categoryToApprove);
+                data.SaveChanges();
+            }
+        }
+
+        public void DenyCategory(int id)
+        {
+            var categoryToDeny = data.SuggestedCategories.Find(id);
+
+            if (categoryToDeny != null)
+            {
+                data.SuggestedCategories.Remove(categoryToDeny);
+                data.SaveChanges();
+            }
+        }
+        
     }
 }
