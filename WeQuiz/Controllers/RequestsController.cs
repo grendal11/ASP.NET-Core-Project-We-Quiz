@@ -6,15 +6,19 @@
     using System.Linq;
     using WeQuiz.Data;
     using WeQuiz.Data.Models;
+    using WeQuiz.Infrastructure;
     using WeQuiz.Models.Requests;
+    using WeQuiz.Services.Users;
 
     public class RequestsController : Controller
     {
         private readonly WeQuizDbContext data;
+        private readonly IUsersService userService;
 
-        public RequestsController(WeQuizDbContext data)
+        public RequestsController(WeQuizDbContext data, IUsersService usersService)
         {
             this.data = data;
+            this.userService = usersService;
         }
 
         [Authorize]
@@ -46,12 +50,23 @@
         }
 
         [Authorize]
-        public IActionResult Category() => View();
+        public IActionResult Category()
+        {
+            if (!User.IsSchoolAdmin() && !User.IsTeacher())
+            {
+                return RedirectToAction("All", "Requests");
+            }
+
+            return View();
+        }
 
         [HttpPost]
         [Authorize]
         public IActionResult Category(CategoryRequestFormModel category)
         {
+            var userId = User.Id();
+            var currentUser = data.Users.Find(userId);
+
             if (!ModelState.IsValid)
             {
                 return View(category);
@@ -61,7 +76,7 @@
             {
                 Name = category.Name,
                 Description = category.Description,
-                SchoolId = category.IsPrivate ? /*currentUser.SchoolId*/ 1 : 0
+                SchoolId = category.IsPrivate ? currentUser.SchoolId : 0
             };
 
             data.SuggestedCategories.Add(newCategory);
@@ -117,6 +132,45 @@
                 SchoolId = c.SchoolId
             })
             .ToList();
+
+        [Authorize]
+        public IActionResult SchoolAdmin(int id)
+        {
+            var user = data.Users.Find(User.Id());
+
+            if (User.IsSchoolAdmin())
+            {
+                return RedirectToAction("All", "Requests");
+            }
+
+            if (string.IsNullOrEmpty(user.PhoneNumber))
+            {
+                return RedirectToAction("AdminPhone", "Requests");
+            }
+
+            this.userService.RequestAdmin(user.Id, id);
+
+            return RedirectToAction("All", "Requests");
+        }
+
+        [Authorize]
+        public IActionResult AdminPhone() => View();
+
+        [Authorize]
+        [HttpPost]
+        public IActionResult AdminPhone(UserPhoneServiceModel phone)
+        {
+            this.userService.AddPhone(phone.PhoneNumber, User.Id());
+
+            return RedirectToAction("All", "Requests");
+        }
+
+        [Authorize]
+        public IActionResult Teacher() => View();
+
+        [Authorize]
+        public IActionResult Student() => View();
+
 
         [Authorize]
         public IActionResult ChoiceQuestion() => View();

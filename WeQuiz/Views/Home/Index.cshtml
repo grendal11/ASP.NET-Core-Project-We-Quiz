@@ -28,8 +28,8 @@ else
 {
     var role = "потребител без училище";
     if (User.IsAdmin()) role = "администратор";
-    if (User.IsSchoolAdmin()) role = "училищен администратор";
     if (User.IsTeacher()) role = "учител";
+    if (User.IsSchoolAdmin()) role = "училищен администратор";
     if (User.IsStudent()) role = "ученик";
 <div class="row justify-content-center">
     <div class="jumbotron mt-5 text-center bg-secondary text-white w-75">

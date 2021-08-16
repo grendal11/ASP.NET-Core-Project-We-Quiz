@@ -1,0 +1,16 @@
+﻿@model UserPhoneServiceModel
+
+@{
+    ViewBag.Title = "Телефонен номер";
+}
+
+<h1 class="text-center" ->@ViewBag.Title</h1>
+<br />
+<form method="post" class="col-lg-6 offset-lg-3 col-sm-12 col-md-8 offset-md-2">
+    <p>Въведения от Вас телефонен номер ще бъде използван за потвърждаване на заявката Ви за роля "Училищен администратор"</p>
+    <div class="form-group">
+        <label asp-for="PhoneNumber"></label>
+        <input asp-for="PhoneNumber" class="form-control" id="name">
+    </div>    
+    <input class="btn btn-primary" type="submit" value="Запиши" />
+</form>

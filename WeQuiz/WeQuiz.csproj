@@ -20,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Areas\Admin\Models\Users\" />
     <Folder Include="Models\Categories\" />
   </ItemGroup>
 

@@ -1,0 +1,40 @@
+﻿@model IEnumerable<PedningAdminServiceModel>
+
+@{
+    ViewBag.Title = "Чакащи одобрение";
+}
+
+@{
+    int i = 1;
+}
+
+
+<h1 class="text-center">@ViewBag.Title</h1>
+<br />
+<table class="table table-bordered table-hover">
+    <thead class="thead-light">
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Име на училище</th>
+            <th scope="col">Име на потребител</th>
+            <th scope="col">E-mail адрес</th>
+            <th scope="col">Действие</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var admin in Model)
+        {
+        <tr>
+            <th scope="row">@i</th>
+            <td>@admin.SchoolName</td>
+            <td>@admin.FullName</td>
+            <td>@admin.UserEmail</td>
+            <td>
+                <a asp-area="Admin" asp-controller="Users" asp-action="Approve" asp-route-id="@admin.Id" class="btn btn-success btn-sm ml-2" role="button" aria-pressed="true"><i class="fas fa-check"></i> Потвърди</a>
+                <a asp-area="Admin" asp-controller="Users" asp-action="Deny" asp-route-id="@admin.Id" class="btn btn-danger btn-sm ml-2" role="button" aria-pressed="true"><i class="fas fa-trash-alt"></i> Откажи</a>
+            </td>
+        </tr>
+            i++;
+        }
+    </tbody>
+</table>

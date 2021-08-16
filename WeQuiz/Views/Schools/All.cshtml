@@ -5,7 +5,7 @@
 }
 
 @{
-    int i = 1; 
+    int i = 1;
 }
 
 
@@ -19,6 +19,8 @@
             <th scope="col">Град</th>
             <th scope="col">Име на училище</th>
             <th scope="col">Код по НЕИСПУО</th>
+            <th scope="col">Роля</th>
+            <th scope="col">Заяви роля</th>
         </tr>
     </thead>
     <tbody>
@@ -30,6 +32,28 @@
                 <td>@school.PopulatedArea</td>
                 <td>@school.Name</td>
                 <td>@school.SchoolCode</td>
+                @if (ViewBag.Role != "" && ViewBag.SchoolId == school.Id)
+                {
+                    <td>
+                        @ViewBag.Role
+                    </td>
+                    <td>
+                        @if (ViewBag.Role == "Учител")
+                        {
+                            <a asp-controller="Requests" asp-action="SchoolAdmin" asp-route-id="@school.Id" class="btn btn-danger btn-sm ml-2" role="button" aria-pressed="true" title="Училищен администратор"><i class="fas fa-user-cog"></i></a>
+                            <a asp-controller="Requests" asp-action="Teacher" asp-route-id="@school.Id" class="btn btn-primary btn-sm ml-2" role="button" aria-pressed="true" title="Редактирай предмети"><i class="fas fa-graduation-cap"></i></a>
+                        }
+                    </td>
+                }
+                else
+                {
+                    <td></td>
+                    <td>
+                        <a asp-controller="Requests" asp-action="SchoolAdmin" asp-route-id="@school.Id" class="btn btn-danger btn-sm ml-2" role="button" aria-pressed="true" title="Училищен администратор"><i class="fas fa-user-cog"></i></a>
+                        <a asp-controller="Requests" asp-action="Teacher" asp-route-id="@school.Id" class="btn btn-primary btn-sm ml-2" role="button" aria-pressed="true" title="Учител"><i class="fas fa-graduation-cap"></i></a>
+                        <a asp-controller="Requests" asp-action="Student" asp-route-id="@school.Id" class="btn btn-success btn-sm ml-2" role="button" aria-pressed="true" title="Ученик"><i class="fas fa-child"></i></a>
+                    </td>
+                }
             </tr>
             i++;
         }

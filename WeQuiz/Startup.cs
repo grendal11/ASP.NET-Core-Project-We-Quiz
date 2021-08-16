@@ -13,6 +13,7 @@ namespace WeQuiz
     using WeQuiz.Infrastructure;
     using WeQuiz.Services.Categories;
     using WeQuiz.Services.Statistics;
+    using WeQuiz.Services.Users;
 
     public class Startup
     {
@@ -44,10 +45,11 @@ namespace WeQuiz
             services.AddControllersWithViews(options => 
             {
                 options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>();
-            });
+            });           
 
             services.AddTransient<IStatisticsService, StatisticsService>();
             services.AddTransient<ICategoriesService, CategoriesService>();
+            services.AddTransient<IUsersService, UsersService>();
         }
 
        

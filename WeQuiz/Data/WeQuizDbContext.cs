@@ -6,6 +6,10 @@
 
     public class WeQuizDbContext : IdentityDbContext<User>
     {
+        public WeQuizDbContext()
+        {
+        }
+
         public WeQuizDbContext(DbContextOptions<WeQuizDbContext> options)
             : base(options)
         {

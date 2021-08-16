@@ -10,8 +10,8 @@ using WeQuiz.Data;
 namespace WeQuiz.Data.Migrations
 {
     [DbContext(typeof(WeQuizDbContext))]
-    [Migration("20210813205935_QuestionsSuggestQuestionsTables")]
-    partial class QuestionsSuggestQuestionsTables
+    [Migration("20210816112604_QuestionsUserRoles")]
+    partial class QuestionsUserRoles
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

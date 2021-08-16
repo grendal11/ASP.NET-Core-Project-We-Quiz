@@ -8,6 +8,7 @@
     using System.Linq;
     using WeQuiz.Data.Models;
     using Microsoft.AspNetCore.Authorization;
+    using WeQuiz.Infrastructure;
 
     public class SchoolsController : Controller
     {
@@ -31,7 +32,28 @@
                     Name = s.Name,
                     SchoolCode = s.SchoolCode
                 })
+                .OrderBy(s => s.Name)
                 .ToList();
+
+            var user = data.Users.Find(User.Id());
+
+            var role = "";
+            if (User.IsSchoolAdmin())
+            {
+                role = "Училищен администратор";
+            }
+            if (User.IsTeacher())
+            {
+                role = "Учител";
+            }
+            if (User.IsStudent())
+            {
+                role = "Ученик";
+            }
+
+            ViewBag.Role = role;
+            ViewBag.SchoolId = user.SchoolId;
+            ViewBag.Count = schools.Count;
 
             return View(schools);
         }

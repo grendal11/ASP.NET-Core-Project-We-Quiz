@@ -64,5 +64,27 @@
                 PendingSubcategories = pendingSubcategories
             };
         }
+
+        public TotalUsersServiceModel TotalUsersStatistics()
+        {
+            var totalUsers = this.data.Users.Count();
+            var totalSchoolAdmins = this.data.SchoolAdmins.Count(sa=>sa.IsApproved==true);
+            var pendingSchoolAdmins = this.data
+                .SchoolAdmins.Count(sa => sa.IsApproved==false);
+            var totalTeachers = this.data.Teachers.Count(t => t.IsApproved==true);
+            var totalStudents = this.data.Students.Count(s=>s.IsApproved==true);
+            var totalFreeUsers = totalUsers - 
+                (totalSchoolAdmins + totalTeachers + totalStudents) - 1;
+
+            return new TotalUsersServiceModel
+            {
+                TotalUsers = totalUsers,
+                TotalSchoolAdmins = totalSchoolAdmins,
+                PendingSchoolAdmins = pendingSchoolAdmins,
+                TotalTeachers = 0,
+                TotalStudents = 0,
+                TotalFreeUsers = 0
+            };
+        }
     }
 }
