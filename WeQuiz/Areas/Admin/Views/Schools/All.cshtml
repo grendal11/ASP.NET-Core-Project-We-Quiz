@@ -10,7 +10,12 @@
 
 
 <h1 class="text-center">@ViewBag.Title</h1>
-<a asp-area="Admin" asp-controller="Schools" asp-action="Add" class="btn btn-secondary btn-sm btn-dark active float-right" role="button" aria-pressed="true">Добави училище</a>
+<br />
+<div class="row justify-content-center pt-3 pb-3">
+    <a asp-area="Admin" asp-controller="Schools" asp-action="Add" class="btn btn-outline-danger btn-sm ml-2" role="button" aria-pressed="true">Добави училище</a>
+    <a asp-area="Admin" asp-controller="Schools" asp-action="AddPopulatedArea" class="btn btn-outline-danger btn-sm ml-2" role="button" aria-pressed="true">Добави населено място</a>
+    <a asp-area="Admin" asp-controller="Schools" asp-action="Requested" class="btn btn-outline-primary btn-sm ml-2" role="button" aria-pressed="true">Заявени училища</a>
+</div>
 <br />
 <table class="table table-bordered table-hover">
     <thead class="thead-light">

@@ -29,12 +29,12 @@
 
         public class InputModel
         {
-            [Required]
+            [Required(ErrorMessage = "Въведете e-mail")]
             [EmailAddress]
             [Display(Name = "E-mail адрес")]
             public string Email { get; set; }
 
-            [Required]
+            [Required(ErrorMessage = "Въведете парола")]
             [DataType(DataType.Password)]
             [Display(Name = "Парола")]
             public string Password { get; set; }

@@ -22,7 +22,7 @@
         <select asp-for="PopulatedAreaId" class="form-control" id="PopulatedAreaId">
         </select>
         <span asp-validation-for="PopulatedAreaId" class="small text-danger"></span>
-        <a asp-controller="Schools" asp-action="AddPopulatedArea" class="float-right">
+        <a asp-area="Admin" asp-controller="Schools" asp-action="AddPopulatedArea" class="float-right">
             Добави населено място
         </a>
     </div>
@@ -47,7 +47,7 @@
     <script>
         $(document).ready(function () {
             $("#DistrictId").change(function () {
-                $.get("/Schools/GetPopulatedAreas", { districtId: $("#DistrictId").val() },
+                $.get("/Admin/Schools/GetPopulatedAreas", { districtId: $("#DistrictId").val() },
                     function (data) {
                         $("#PopulatedAreaId").empty();
                         $.each(data, function (index, row) {

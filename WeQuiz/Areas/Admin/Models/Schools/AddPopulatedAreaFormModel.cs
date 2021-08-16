@@ -1,9 +1,8 @@
 ﻿
-namespace WeQuiz.Models.Schools
+namespace WeQuiz.Areas.Admin.Models.Schools
 {
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
-    using WeQuiz.Views.Schools;
 
     using static Data.DataConstants.PopulatedArea;
 

@@ -1,4 +1,4 @@
-﻿namespace WeQuiz.Areas.Admin
+﻿namespace WeQuiz.Areas.Admin.Models.Schools
 {
     public class SchoolViewModel
     {
