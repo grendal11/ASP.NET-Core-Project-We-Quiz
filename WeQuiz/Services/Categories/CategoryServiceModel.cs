@@ -2,8 +2,10 @@
 {
     public class CategoryServiceModel
     {
-        public string Name { get; init; }
+        public int Id { get; init; }
 
-        public int SchoolCode { get; init; }
+        public string Name { get; set; }
+
+        public int SchoolId { get; set; }
     }
 }

@@ -2,8 +2,6 @@
 {
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
-    using System.Linq;
-    using WeQuiz.Data;
     using WeQuiz.Services.Categories;
 
     public class CategoriesController : Controller
@@ -17,7 +15,7 @@
 
         public IActionResult All()
         {
-            var allCategories = categories.All();
+            var allCategories = this.categories.All();
 
             return View(allCategories);
         }

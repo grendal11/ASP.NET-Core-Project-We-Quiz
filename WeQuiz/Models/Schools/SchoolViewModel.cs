@@ -1,6 +1,6 @@
 ﻿namespace WeQuiz.Models.Schools
 {
-    public class SchoolViewModel
+    public class Schoolservicemodel
     {
         public int Id { get; init; }
 

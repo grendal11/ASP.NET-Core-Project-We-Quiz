@@ -2,23 +2,23 @@
 {
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
-    using System.Collections.Generic;
-    using System.Linq;
-    using WeQuiz.Data;
-    using WeQuiz.Data.Models;
     using WeQuiz.Infrastructure;
     using WeQuiz.Models.Requests;
+    using WeQuiz.Services.Categories;
+    using WeQuiz.Services.Schools;
     using WeQuiz.Services.Users;
 
     public class RequestsController : Controller
     {
-        private readonly WeQuizDbContext data;
-        private readonly IUsersService userService;
+        private readonly IUsersService users;
+        private readonly ISchoolsService schools;
+        private readonly ICategoriesService categories;
 
-        public RequestsController(WeQuizDbContext data, IUsersService usersService)
+        public RequestsController(IUsersService users, ISchoolsService schools, ICategoriesService categories)
         {
-            this.data = data;
-            this.userService = usersService;
+            this.users = users;
+            this.schools = schools;
+            this.categories = categories;
         }
 
         [Authorize]
@@ -36,15 +36,7 @@
                 return View(school);
             }
 
-            var newSchool = new SchoolRequest
-            {
-                Name = school.Name,
-                District = school.District,
-                PopulatedArea = school.PopulatedArea
-            };
-
-            data.SchoolRequests.Add(newSchool);
-            data.SaveChanges();
+            this.schools.AddSchoolRequest(school.Name, school.District, school.PopulatedArea);
 
             return RedirectToAction("All", "Schools");
         }
@@ -65,22 +57,13 @@
         public IActionResult Category(CategoryRequestFormModel category)
         {
             var userId = User.Id();
-            var currentUser = data.Users.Find(userId);
 
             if (!ModelState.IsValid)
             {
                 return View(category);
-            }
+            }                
 
-            var newCategory = new SuggestedCategory
-            {
-                Name = category.Name,
-                Description = category.Description,
-                SchoolId = category.IsPrivate ? currentUser.SchoolId : 0
-            };
-
-            data.SuggestedCategories.Add(newCategory);
-            data.SaveChanges();
+            this.categories.AddSuggestedCategory(category.Name, category.Description, category.IsPrivate, userId);
 
             return RedirectToAction("All", "Requests");
         }
@@ -88,67 +71,54 @@
         [Authorize]
         public IActionResult Subcategory() => View(new SubcategoryRequestFormModel
         {
-            Categories = this.GetCategories()
+            Categories = this.categories.Categories()
         });
 
         [HttpPost]
         [Authorize]
         public IActionResult Subcategory(SubcategoryRequestFormModel subCategory)
         {
-            if (!this.data.Categories.Any(c => c.Id == subCategory.CategoryId))
+            if (!this.categories.HasParentCategoryById(subCategory.CategoryId))
             {
                 this.ModelState.AddModelError(nameof(subCategory.CategoryId), "Категорията не съществува.");
             }
 
             if (!ModelState.IsValid)
             {
-                subCategory.Categories= this.GetCategories();
+                subCategory.Categories = this.categories.Categories();
 
                 return View(subCategory);
             }
 
-            var newSubcategory = new SuggestedSubcategory
-            {
-                Name = subCategory.Name,
-                Description = subCategory.Description,
-                CategoryId = subCategory.CategoryId,
-                SchoolId = subCategory.IsPrivate ? /*currentUser.SchoolId*/ 1 : this.data.Categories.Find(subCategory.CategoryId).SchoolId
-            };
+            var userId = User.Id();
 
-            data.SuggestedSubcategories.Add(newSubcategory);
-            data.SaveChanges();
+            this.categories.AddSuggestedSubcategory(
+                subCategory.Name, 
+                subCategory.Description, 
+                subCategory.CategoryId, 
+                subCategory.IsPrivate, 
+                userId);
 
             return RedirectToAction("All", "Requests");
         }
 
 
-        private IEnumerable<CategoryViewModel> GetCategories()
-            => this.data
-            .Categories
-            .Select(c => new CategoryViewModel
-            {
-                Id = c.Id,
-                Name = c.Name,
-                SchoolId = c.SchoolId
-            })
-            .ToList();
-
         [Authorize]
         public IActionResult SchoolAdmin(int id)
         {
-            var user = data.Users.Find(User.Id());
+            var userId = User.Id();
 
             if (User.IsSchoolAdmin())
             {
                 return RedirectToAction("All", "Requests");
             }
 
-            if (string.IsNullOrEmpty(user.PhoneNumber))
+            if (!this.users.HasPhone(userId))
             {
                 return RedirectToAction("AdminPhone", "Requests");
             }
 
-            this.userService.RequestAdmin(user.Id, id);
+            this.users.RequestAdmin(userId, id);
 
             return RedirectToAction("All", "Requests");
         }
@@ -160,7 +130,9 @@
         [HttpPost]
         public IActionResult AdminPhone(UserPhoneServiceModel phone)
         {
-            this.userService.AddPhone(phone.PhoneNumber, User.Id());
+            var userId = User.Id();
+
+            this.users.AddPhone(phone.PhoneNumber, userId);
 
             return RedirectToAction("All", "Requests");
         }

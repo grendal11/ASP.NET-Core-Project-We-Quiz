@@ -60,8 +60,23 @@
                         .First(s => s.Id == cat.SchoolId).Name;
                 }
             }
-;
+
             return allCategories;
+        }
+
+        public IEnumerable<CategoryServiceModel> Categories()
+        {
+            var categories =  this.data
+                .Categories
+                .Select(c => new CategoryServiceModel
+                {
+                    Id = c.Id,
+                    Name = c.Name,
+                    SchoolId = c.SchoolId
+                })
+                .ToList();
+
+            return categories;
         }
 
         public IEnumerable<PendingCategoryServiceModel> PendingCategories()
@@ -70,10 +85,10 @@
                .SuggestedCategories
                .Select(c => new PendingCategoryServiceModel
                {
-                   Id=c.Id,
+                   Id = c.Id,
                    Name = c.Name,
-                   Description=c.Description,
-                   SchoolId=c.SchoolId
+                   Description = c.Description,
+                   SchoolId = c.SchoolId
                })
                .OrderBy(c => c.Name)
                .ToList();
@@ -84,24 +99,61 @@
                 {
                     var school = data.Schools.FirstOrDefault(s => s.Id == cat.SchoolId);
 
-                    cat.SchoolName = school==null ? "" : school.Name;
+                    cat.SchoolName = school == null ? "" : school.Name;
                 }
             }
 
             return pendingCategories;
         }
 
-        public void Add(CategoryServiceModel category)
+        public void Add(string name, int schoolCode)
         {
             var school = data.Schools
-                .FirstOrDefault(s => s.SchoolCode == category.SchoolCode);
+                .FirstOrDefault(s => s.SchoolCode == schoolCode);
 
             data.Categories.Add(new Category
             {
-                Name = category.Name,
+                Name = name,
                 SchoolId = school == null ? 0 : school.Id
             });
 
+            data.SaveChanges();
+        }
+
+        public void AddSuggestedCategory(string name, string description, bool isPrivate, string userId)
+        {
+            var currentUser = data.Users.Find(userId);
+
+            var schoolId = isPrivate ? currentUser.SchoolId : 0;
+
+            var newCategory = new SuggestedCategory
+            {
+                Name = name,
+                Description = description,
+                SchoolId = schoolId
+            };
+
+            data.SuggestedCategories.Add(newCategory);
+            data.SaveChanges();
+        }
+
+        public void AddSuggestedSubcategory(string name, string description, int categoryId, bool isPrivate, string userId) 
+        {
+            var currentUser = data.Users.Find(userId);
+
+            var schoolId = isPrivate ? 
+                currentUser.SchoolId : 
+                this.data.Categories.Find(categoryId).SchoolId;
+
+            var newSubcategory = new SuggestedSubcategory
+            {
+                Name = name,
+                Description = description,
+                CategoryId = categoryId,
+                SchoolId = schoolId
+            };
+
+            data.SuggestedSubcategories.Add(newSubcategory);
             data.SaveChanges();
         }
 
@@ -109,12 +161,12 @@
         {
             var categoryToApprove = data.SuggestedCategories.Find(id);
 
-            if (categoryToApprove !=null)
+            if (categoryToApprove != null)
             {
                 var newCategory = new Category
-                { 
-                    Name=categoryToApprove.Name,
-                    SchoolId=categoryToApprove.SchoolId                    
+                {
+                    Name = categoryToApprove.Name,
+                    SchoolId = categoryToApprove.SchoolId
                 };
 
                 data.Categories.Add(newCategory);
@@ -133,6 +185,16 @@
                 data.SaveChanges();
             }
         }
-        
+
+        public bool HasParentCategoryById(int id) 
+        {
+            if (this.data.Categories.Any(c => c.Id == id))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
     }
 }

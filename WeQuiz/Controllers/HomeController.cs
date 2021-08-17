@@ -1,30 +1,30 @@
 ﻿namespace WeQuiz.Controllers
 {
     using Microsoft.AspNetCore.Mvc;
-    using WeQuiz.Data;
     using WeQuiz.Infrastructure;
     using WeQuiz.Services.Statistics;
+    using WeQuiz.Services.Users;
 
     public class HomeController : Controller
     {
         private readonly IStatisticsService statistics;
-        private readonly WeQuizDbContext data;
+        private readonly IUsersService users;
 
-        public HomeController(IStatisticsService statistics, WeQuizDbContext data)
+        public HomeController(IStatisticsService statistics, IUsersService users)
         {
             this.statistics = statistics;
-            this.data = data;
+            this.users = users;
         }
 
         public IActionResult Index()
         {
-            var totals = statistics.Totals();
+            var totals = this.statistics.Totals();
 
             if (User.Identity.IsAuthenticated)
             {
                 var userId = User.Id();
 
-                var userAlias = this.data.Users.Find(userId).Alias;
+                var userAlias = this.users.Alias(userId);
 
                 ViewBag.Alias = userAlias;
             }

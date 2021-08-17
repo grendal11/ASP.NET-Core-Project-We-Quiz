@@ -13,6 +13,8 @@
 
         public void AddPopulatedArea(string name, int districtId);
 
+        public void AddSchoolRequest(string name, string district, string populatedArea);
+
         public void FinishSchoolRequest(int id);
 
         public bool DIstrictExists(int id);

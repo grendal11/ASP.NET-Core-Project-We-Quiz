@@ -1,60 +1,35 @@
 ﻿namespace WeQuiz.Controllers
 {
-    using WeQuiz.Data;
-    using WeQuiz.Models.Schools;
     using Microsoft.AspNetCore.Mvc;
-    using System.Linq;
     using Microsoft.AspNetCore.Authorization;
     using WeQuiz.Infrastructure;
+    using WeQuiz.Services.Schools;
+    using WeQuiz.Services.Users;
 
     public class SchoolsController : Controller
     {
-        private readonly WeQuizDbContext data;
+        private readonly IUsersService users;
+        private readonly ISchoolsService schools;
 
-        public SchoolsController(WeQuizDbContext data)
+        public SchoolsController(ISchoolsService schools, IUsersService users)
         {
-            this.data = data;
+            this.schools = schools;
+            this.users = users;
         }
 
         [Authorize]
         public IActionResult All()
         {
-            var schools = this.data
-                .Schools
-                .Select(s => new SchoolViewModel
-                {
-                    Id = s.Id,
-                    District = s.PopulatedArea.District.Name,
-                    PopulatedArea = s.PopulatedArea.Name,
-                    Name = s.Name,
-                    SchoolCode = s.SchoolCode
-                })
-                .OrderBy(s => s.Name)
-                .ToList();
+            var schools = this.schools.All();
 
-            var user = data.Users.Find(User.Id());
+            var userId = User.Id();
 
-            var role = "";
-            if (User.IsSchoolAdmin())
-            {
-                role = "Училищен администратор";
-            }
-            if (User.IsTeacher())
-            {
-                role = "Учител";
-            }
-            if (User.IsStudent())
-            {
-                role = "Ученик";
-            }
-
-            ViewBag.Role = role;
-            ViewBag.SchoolId = user.SchoolId;
-            ViewBag.Count = schools.Count;
+            ViewBag.Role = User.RoleName();
+            ViewBag.SchoolId = this.users.SchoolId(userId);
 
             return View(schools);
         }
 
-       
+
     }
 }

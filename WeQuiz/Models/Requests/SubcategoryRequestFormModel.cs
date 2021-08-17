@@ -2,7 +2,7 @@
 {
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
-
+    using WeQuiz.Services.Categories;
     using static Data.DataConstants;
     using static Data.DataConstants.Category;
 
@@ -10,7 +10,7 @@
     {
         [Display(Name = "Категория")]
         public int CategoryId { get; init; }
-        public IEnumerable<CategoryViewModel> Categories { get; set; }
+        public IEnumerable<CategoryServiceModel> Categories { get; set; }
 
         [Required(ErrorMessage = "Въведете име на подкатегория")]
         [StringLength(NameMaxLength, MinimumLength = NameMinLength, ErrorMessage = "Името трябва да е между {2} и {1} символа")]

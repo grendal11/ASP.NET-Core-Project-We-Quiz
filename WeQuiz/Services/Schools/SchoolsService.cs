@@ -72,6 +72,19 @@
             this.data.SaveChanges();
         }
 
+        public void AddSchoolRequest(string name, string district, string populatedArea) 
+        {
+            var newSchool = new SchoolRequest
+            {
+                Name = name,
+                District = district,
+                PopulatedArea = populatedArea
+            };
+
+            data.SchoolRequests.Add(newSchool);
+            data.SaveChanges();
+        }
+
         public void FinishSchoolRequest(int id) 
         {
             var requestToRemove = this.data.SchoolRequests.Find(id);

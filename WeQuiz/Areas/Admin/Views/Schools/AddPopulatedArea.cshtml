@@ -4,7 +4,7 @@
     ViewBag.Title = "Добавяне на населено място";
 }
 
-<h1 class="text-center"->@ViewBag.Title</h1>
+<h1 class="text-center" ->@ViewBag.Title</h1>
 <br />
 <form method="post" class="col-lg-6 offset-lg-3 col-sm-12 col-md-8 offset-md-2">
     <div class="form-group">
@@ -17,11 +17,15 @@
             }
         </select>
         <span asp-validation-for="DistrictId" class="small text-danger"></span>
-    </div>    
+    </div>
     <div class="form-group">
         <label asp-for="Name"></label>
         <input asp-for="Name" class="form-control" id="name">
         <span asp-validation-for="Name" class="small text-danger"></span>
-    </div>    
+    </div>
     <input class="btn btn-primary" type="submit" value="Запис" />
 </form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

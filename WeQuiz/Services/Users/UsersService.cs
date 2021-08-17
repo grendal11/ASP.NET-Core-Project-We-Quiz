@@ -21,6 +21,28 @@
             this.userManager = userManager;
         }
 
+        public string Alias(string userId) 
+        {
+            return this.data.Users.Find(userId).Alias;
+        }
+
+        public int SchoolId(string userId)
+        {
+            return this.data.Users.Find(userId).SchoolId;
+        }
+
+        public bool HasPhone(string userId) 
+        {
+            var user = this.data.Users.Find(userId);
+                                    
+            if (string.IsNullOrEmpty(user.PhoneNumber))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
         public IEnumerable<PedningAdminServiceModel> PendingAdmins()
         {
             var pendingAdmins = this.data.SchoolAdmins

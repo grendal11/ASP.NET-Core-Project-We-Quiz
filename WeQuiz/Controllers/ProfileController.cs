@@ -1,9 +1,8 @@
 ﻿namespace WeQuiz.Controllers
 {
+    using System.Linq;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
-    using System.Collections.Generic;
-    using System.Linq;
     using WeQuiz.Data;
     using WeQuiz.Infrastructure;
     using WeQuiz.Models.Profile;
@@ -23,13 +22,11 @@
         {
             var userId = User.Id();
 
-            var user = data.Users.Find(userId);
-
             if (User.IsAdmin())
             {
                 return RedirectToAction("Index", "Home");
             }
-
+            
             var roleName = "";
             if (User.IsSchoolAdmin())
             {
@@ -43,8 +40,9 @@
             {
                 roleName = "Ученик";
             }
-
-
+            
+            var user = data.Users.Find(userId);
+   
             var userInfo = new ProfileViewModel
             {
                 UserId = userId,

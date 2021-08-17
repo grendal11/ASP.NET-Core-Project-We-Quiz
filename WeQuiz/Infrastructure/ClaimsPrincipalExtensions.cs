@@ -21,5 +21,32 @@
 
         public static bool IsStudent(this ClaimsPrincipal user)
           => user.IsInRole(WebConstants.StudentRoleName);
+
+        public static string RoleName(this ClaimsPrincipal user) 
+        {
+            var roleName = "";
+
+            if (user.IsInRole(WebConstants.StudentRoleName))
+            {
+                roleName = "Ученик";
+            }
+
+            if (user.IsInRole(WebConstants.TeacherRoleName))
+            {
+                roleName = "Учител";
+            }
+
+            if (user.IsInRole(WebConstants.SchoolAdminRoleName))
+            {
+                roleName = "Училищен администратор";
+            }
+
+            if (user.IsInRole(Areas.Admin.AdminConstants.AdministratorRoleName))
+            {
+                roleName = "Администратор";
+            }
+
+            return roleName;
+        }
     }
 }

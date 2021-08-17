@@ -1,33 +1,29 @@
 ﻿namespace WeQuiz.Areas.Admin.Controllers
 {
     using Microsoft.AspNetCore.Mvc;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Threading.Tasks;
     using WeQuiz.Services.Statistics;
     using WeQuiz.Services.Users;
 
     public class UsersController : AdminController
     {
         private readonly IStatisticsService statistics;
-        private readonly IUsersService usersService;
+        private readonly IUsersService users;
 
-        public UsersController(IStatisticsService statistics, IUsersService usersService)
+        public UsersController(IStatisticsService statistics, IUsersService users)
         {
             this.statistics = statistics;
-            this.usersService = usersService;
+            this.users = users;
         }
         public IActionResult Pending()
         {
-            var pendingAdmins = this.usersService.PendingAdmins();
+            var pendingAdmins = this.users.PendingAdmins();
 
             return View(pendingAdmins);
         }
 
         public IActionResult SchoolAdmins()
         {
-            var allSchoolAdmins = this.usersService.AllSchoolAdmins();
+            var allSchoolAdmins = this.users.AllSchoolAdmins();
 
             return View(allSchoolAdmins);
         }
@@ -41,14 +37,14 @@
 
         public IActionResult Approve(string id)
         {
-            usersService.ApproveAdmin(id);
+            this.users.ApproveAdmin(id);
 
             return Redirect("/Admin/Users/Pending");
         }
 
         public IActionResult Deny(string id)
         {
-            usersService.DenyAdmin(id);
+            this.users.DenyAdmin(id);
 
             return Redirect("/Admin/Users/Pending");
         }

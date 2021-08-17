@@ -1,6 +1,5 @@
 ﻿namespace WeQuiz.Areas.Admin.Controllers
 {
-    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using WeQuiz.Areas.Admin.Models;
     using WeQuiz.Services.Categories;
@@ -36,13 +35,7 @@
         [HttpPost]
         public IActionResult Add(CategoryFormModel category)
         {
-            var newCategory = new CategoryServiceModel
-            {   
-                Name=category.Name,
-                SchoolCode = category.SchoolCode
-            };
-
-            this.categories.Add(newCategory);
+            this.categories.Add(category.Name, category.SchoolCode);
 
             return Redirect("/Admin/Categories/All");
         }
@@ -56,14 +49,14 @@
 
         public IActionResult Approve(int id)
         {
-            categories.ApproveCategory(id);
+            this.categories.ApproveCategory(id);
 
             return Redirect("/Admin/Categories/Pending");
         }
 
         public IActionResult Deny(int id)
         {
-            categories.DenyCategory(id);
+            this.categories.DenyCategory(id);
 
             return Redirect("/Admin/Categories/Pending");
         }

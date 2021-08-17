@@ -21,6 +21,10 @@
         <label asp-for="Name"></label>
         <input asp-for="Name" class="form-control" id="name">
         <span asp-validation-for="Name" class="small text-danger"></span>
-    </div>    
+    </div>
     <input class="btn btn-primary" type="submit" value="Подай заявка" />
 </form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
