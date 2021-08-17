@@ -30,7 +30,7 @@
         public class InputModel
         {
             [Required(ErrorMessage = "Въведете e-mail")]
-            [EmailAddress]
+            [EmailAddress(ErrorMessage = "Въведения e-mail е невалиден")]
             [Display(Name = "E-mail адрес")]
             public string Email { get; set; }
 

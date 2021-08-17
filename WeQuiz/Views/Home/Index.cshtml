@@ -7,7 +7,6 @@
 
 @if (!User.Identity.IsAuthenticated)
 {
-
     <div class="jumbotron mt-4 text-center bg-secondary text-white">
         <h1 class="display-4" style="font-family: 'Kristen ITC'">
             <span class="text-warning">W</span>e <span class="text-warning">Q</span>uiz
@@ -26,16 +25,11 @@
 }
 else
 {
-    var role = "потребител без училище";
-    if (User.IsAdmin()) role = "администратор";
-    if (User.IsTeacher()) role = "учител";
-    if (User.IsSchoolAdmin()) role = "училищен администратор";
-    if (User.IsStudent()) role = "ученик";
-<div class="row justify-content-center">
-    <div class="jumbotron mt-5 text-center bg-secondary text-white w-75">
-        <h2 class="display-6">Здравейте, @ViewBag.Alias</h2>
-        <hr class="my-4 w-75 border-white">
-        <h2>Влязохте в системата като <span class="font-weight-bold">@role</span></h2>
+    <div class="row justify-content-center">
+        <div class="jumbotron mt-5 text-center bg-secondary text-white w-75">
+            <h2 class="display-6">Здравейте, @ViewBag.Alias</h2>
+            <hr class="my-4 w-75 border-white">
+            <h2>Влязохте в системата като <span class="font-weight-bold">@ViewBag.Role</span></h2>
+        </div>
     </div>
-</div>
 }

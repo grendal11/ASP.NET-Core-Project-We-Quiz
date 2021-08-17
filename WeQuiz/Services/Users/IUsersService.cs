@@ -15,6 +15,10 @@
 
         void AddPhone(string phone, string userId);
 
+        public ProfileServiceModel EditableInfo(string userId);
+
+        public void EditProfile(string name, string alias, string phone, string userId);
+
         void RequestAdmin(string userId, int id);
 
         void ApproveAdmin(string userId);

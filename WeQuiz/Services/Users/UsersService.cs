@@ -1,14 +1,13 @@
 ﻿namespace WeQuiz.Services.Users
 {
     using Microsoft.AspNetCore.Identity;
-    using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
     using WeQuiz.Data;
     using WeQuiz.Data.Models;
 
-        using static WeQuiz.WebConstants;
+    using static WeQuiz.WebConstants;
 
     public class UsersService : IUsersService
     {
@@ -41,6 +40,40 @@
             }
 
             return true;
+        }
+
+        public ProfileServiceModel EditableInfo(string userId)
+        {
+            var user = this.data.Users.Find(userId);
+
+            return new ProfileServiceModel
+            { 
+                FullName = user.FullName,
+                Alias = user.Alias,
+                PhoneNumber = user.PhoneNumber
+            };
+        }
+
+        public void EditProfile(string name, string alias, string phone, string userId)
+        {
+            var user = this.data.Users.Find(userId);
+
+            if (!string.IsNullOrWhiteSpace(name))
+            {
+                user.FullName = name;
+            }
+
+            if (!string.IsNullOrWhiteSpace(alias))
+            {
+                user.Alias = alias;
+            }
+
+            if (!string.IsNullOrWhiteSpace(phone))
+            {
+                user.PhoneNumber = phone;
+            }
+
+            this.data.SaveChanges();
         }
 
         public IEnumerable<PedningAdminServiceModel> PendingAdmins()

@@ -26,6 +26,10 @@
 
                 var userAlias = this.users.Alias(userId);
 
+                var userRole = User.RoleName();
+
+                ViewBag.Role = userRole == "" ? "Потребител без училище" : userRole;
+
                 ViewBag.Alias = userAlias;
             }
 
