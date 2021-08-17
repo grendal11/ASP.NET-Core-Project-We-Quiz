@@ -9,5 +9,7 @@
         TotalCategoriesServiceModel CategoriesStatistics();
 
         TotalUsersServiceModel TotalUsersStatistics();
+
+        TotalSchoolUsersServiceModel TotalSchoolUsers(string userId);
     }
 }

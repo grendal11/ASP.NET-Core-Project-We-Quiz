@@ -48,7 +48,7 @@
         public TotalCategoriesServiceModel CategoriesStatistics()
         {
             var totalCategories = data.Categories.Count();
-            var publicCategories = data.Categories.Count(c=>c.SchoolId==0);
+            var publicCategories = data.Categories.Count(c => c.SchoolId == 0);
             var pendingCategories = data.SuggestedCategories.Count();
             var totalSubcategories = data.Subcategories.Count();
             var publicSubcategories = data.Subcategories.Count(c => c.SchoolId == 0);
@@ -68,12 +68,12 @@
         public TotalUsersServiceModel TotalUsersStatistics()
         {
             var totalUsers = this.data.Users.Count();
-            var totalSchoolAdmins = this.data.SchoolAdmins.Count(sa=>sa.IsApproved==true);
+            var totalSchoolAdmins = this.data.SchoolAdmins.Count(sa => sa.IsApproved == true);
             var pendingSchoolAdmins = this.data
-                .SchoolAdmins.Count(sa => sa.IsApproved==false);
-            var totalTeachers = this.data.Teachers.Count(t => t.IsApproved==true);
-            var totalStudents = this.data.Students.Count(s=>s.IsApproved==true);
-            var totalFreeUsers = totalUsers - 
+                .SchoolAdmins.Count(sa => sa.IsApproved == false);
+            var totalTeachers = this.data.Teachers.Count(t => t.IsApproved == true);
+            var totalStudents = this.data.Students.Count(s => s.IsApproved == true);
+            var totalFreeUsers = totalUsers -
                 (totalSchoolAdmins + totalTeachers + totalStudents) - 1;
 
             return new TotalUsersServiceModel
@@ -81,9 +81,44 @@
                 TotalUsers = totalUsers,
                 TotalSchoolAdmins = totalSchoolAdmins,
                 PendingSchoolAdmins = pendingSchoolAdmins,
-                TotalTeachers = 0,
-                TotalStudents = 0,
-                TotalFreeUsers = 0
+                TotalTeachers = totalTeachers,
+                TotalStudents = totalStudents,
+                TotalFreeUsers = totalFreeUsers
+            };
+        }
+
+        public TotalSchoolUsersServiceModel TotalSchoolUsers(string userId)
+        {
+            var schoolId = this.data.Users.Find(userId).SchoolId;
+
+            var totalSchoolAdmins = this.data.SchoolAdmins
+                .Count(sa => sa.IsApproved == true && sa.SchoolId == schoolId);
+
+            var pendingSchoolAdmins = this.data.SchoolAdmins
+                .Count(sa => sa.IsApproved == false && sa.SchoolId == schoolId);
+
+            var totalTeachers = this.data.Teachers
+                .Count(t => t.IsApproved == true && t.SchoolId == schoolId);
+
+            var pendingTeachers = this.data.Teachers
+                .Count(t => t.IsApproved == false && t.SchoolId == schoolId);
+
+            var totalStudents = this.data.Students
+                .Count(s => s.IsApproved == true && s.SchoolId == schoolId);
+
+            var pendingStudents = this.data.Students
+                .Count(s => s.IsApproved == false && s.SchoolId == schoolId);
+
+
+            return new TotalSchoolUsersServiceModel
+            {
+                TotalSchoolAdmins = totalSchoolAdmins,
+                PendingSchoolAdmins = pendingSchoolAdmins,
+                TotalTeachers = totalTeachers,
+                PendingTeachers = pendingTeachers,
+                TotalStudents = totalStudents,
+                PendingStudents = pendingStudents
+
             };
         }
     }

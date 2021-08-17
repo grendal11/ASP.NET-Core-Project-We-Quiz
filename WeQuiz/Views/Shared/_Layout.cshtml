@@ -34,6 +34,18 @@
                         }
                         else
                         {
+                            @if (User.IsSchoolAdmin())
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action="Home">Потребители</a>
+                                </li>
+                            }
+                            @if (User.IsTeacher())
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Subcategories" asp-action="Home">Подкатегории</a>
+                                </li>
+                            }
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Requests" asp-action="All">Заявки</a>
                             </li>

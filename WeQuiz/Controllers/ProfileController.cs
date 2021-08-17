@@ -40,7 +40,7 @@
                 Email = user.Email,
                 FullName = user.FullName,
                 Alias = user.Alias,
-                SchoolName = this.data.Schools.Find(user.SchoolId).Name,
+                SchoolName = user.SchoolId!=0 ? this.data.Schools.Find(user.SchoolId).Name : "",
                 RoleName = roleName,
                 Class = User.IsStudent() ?
                     data.Students.First(s => s.UserId == userId).Class : 0
@@ -60,7 +60,7 @@
 
                 userInfo.Categories = categories;
             }
-
+;
             return View(userInfo);
         }
 

@@ -1,0 +1,37 @@
+﻿@model IEnumerable<StudentServiceModel>
+
+@{
+    ViewBag.Title = "Потвърдени учители";
+}
+
+@{
+    int i = 1;
+}
+
+
+<h1 class="text-center">@ViewBag.Title</h1>
+<br />
+<table class="table table-bordered table-hover">
+    <thead class="thead-light">
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Име на потребител</th>
+            <th scope="col">E-mail адрес</th>
+            <th scope="col">Действие</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var student in Model)
+        {
+            <tr>
+                <th scope="row">@i</th>
+                <td>@student.FullName</td>
+                <td>@student.UserEmail</td>
+                <td>
+                    <a asp-area="" asp-controller="Users" asp-action="RemoveStudent" asp-route-id="@student.Id" class="btn btn-danger btn-sm ml-2" role="button" aria-pressed="true"><i class="fas fa-trash-alt"></i> Премахни</a>
+                </td>
+            </tr>
+            i++;
+        }
+    </tbody>
+</table>

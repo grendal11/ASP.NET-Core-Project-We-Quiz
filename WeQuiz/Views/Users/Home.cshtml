@@ -1,0 +1,33 @@
+﻿@model TotalSchoolUsersServiceModel
+
+@{
+    ViewBag.Title = "Потребители";
+}
+
+<div class="row justify-content-center">
+    <div class="card mt-3 mb-3 text-center text-white w-75" style="background-color:orange">
+        <div class="row">
+            <div class="col-md-6 col-sm-12 mt-3 mb-3">
+                <h3>Потвърдени потребители</h3>
+                <hr class="text-white" />
+                <h5 class="display-6">Администратори: @Model.TotalSchoolAdmins</h5>
+                <h5 class="display-6">Учители: @Model.TotalTeachers</h5>
+                <h5 class="display-6">Ученици: @Model.TotalStudents</h5>
+            </div>
+            <div class="col-md-6 col-sm-12 mt-3 mb-3">
+                <h3>Изчакващи потвърждение</h3>
+                <hr class="text-white" />
+                <h5 class="display-6">Администратори: @Model.PendingSchoolAdmins</h5>
+                <h5 class="display-6">Учители: @Model.PendingTeachers</h5>
+                <h5 class="display-6">Ученици: @Model.PendingStudents</h5>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row justify-content-center pt-3 pb-3">
+    <a asp-area="" asp-controller="Users" asp-action="Teachers" class="btn btn-outline-primary btn-sm ml-2" role="button" aria-pressed="true">Потвърдени учители</a>
+    <a asp-area="" asp-controller="Users" asp-action="PendingTeachers" class="btn btn-outline-danger btn-sm ml-2" role="button" aria-pressed="true">Чакащи учители</a>
+    <a asp-area="" asp-controller="Users" asp-action="Students" class="btn btn-outline-primary btn-sm ml-2" role="button" aria-pressed="true">Потвърдени ученици</a>
+    <a asp-area="" asp-controller="Users" asp-action="PendingStudents" class="btn btn-outline-danger btn-sm ml-2" role="button" aria-pressed="true">Чакащи ученици</a>
+</div>

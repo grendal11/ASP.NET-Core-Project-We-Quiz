@@ -48,5 +48,12 @@
 
             return Redirect("/Admin/Users/Pending");
         }
+
+        public IActionResult Remove(string id)
+        {
+            this.users.RemoveAdmin(id);
+
+            return Redirect("/Admin/Users/SchoolAdmins");
+        }
     }
 }

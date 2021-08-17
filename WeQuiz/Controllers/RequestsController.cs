@@ -138,11 +138,34 @@
         }
 
         [Authorize]
-        public IActionResult Teacher() => View();
+        public IActionResult Teacher(int id)
+        {
+            var userId = User.Id();
+
+            if (User.IsSchoolAdmin())
+            {
+                return RedirectToAction("All", "Requests");
+            }
+
+            this.users.RequestTeacher(userId, id);
+
+            return RedirectToAction("All", "Requests");
+        }
 
         [Authorize]
-        public IActionResult Student() => View();
+        public IActionResult Student(int id)
+        {
+            var userId = User.Id();
 
+            if (User.IsSchoolAdmin() || User.IsTeacher())
+            {
+                return RedirectToAction("All", "Requests");
+            }
+
+            this.users.RequestStudent(userId, id);
+
+            return RedirectToAction("All", "Requests");
+        }
 
         [Authorize]
         public IActionResult ChoiceQuestion() => View();

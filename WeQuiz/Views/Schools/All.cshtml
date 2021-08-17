@@ -38,7 +38,7 @@
                         @ViewBag.Role
                     </td>
                     <td>
-                        @if (ViewBag.Role == "Учител")
+                        @if (ViewBag.Role == "Учител" && ViewBag.Role != "Училищен администратор")
                         {
                             <a asp-controller="Requests" asp-action="SchoolAdmin" asp-route-id="@school.Id" class="btn btn-danger btn-sm ml-2" role="button" aria-pressed="true" title="Училищен администратор"><i class="fas fa-user-cog"></i></a>
                             <a asp-controller="Requests" asp-action="Teacher" asp-route-id="@school.Id" class="btn btn-primary btn-sm ml-2" role="button" aria-pressed="true" title="Редактирай предмети"><i class="fas fa-graduation-cap"></i></a>
@@ -49,9 +49,12 @@
                 {
                     <td></td>
                     <td>
-                        <a asp-controller="Requests" asp-action="SchoolAdmin" asp-route-id="@school.Id" class="btn btn-danger btn-sm ml-2" role="button" aria-pressed="true" title="Училищен администратор"><i class="fas fa-user-cog"></i></a>
-                        <a asp-controller="Requests" asp-action="Teacher" asp-route-id="@school.Id" class="btn btn-primary btn-sm ml-2" role="button" aria-pressed="true" title="Учител"><i class="fas fa-graduation-cap"></i></a>
-                        <a asp-controller="Requests" asp-action="Student" asp-route-id="@school.Id" class="btn btn-success btn-sm ml-2" role="button" aria-pressed="true" title="Ученик"><i class="fas fa-child"></i></a>
+                        @if (ViewBag.SchoolId == 0)
+                        {
+                            <a asp-controller="Requests" asp-action="SchoolAdmin" asp-route-id="@school.Id" class="btn btn-danger btn-sm ml-2" role="button" aria-pressed="true" title="Училищен администратор"><i class="fas fa-user-cog"></i></a>
+                            <a asp-controller="Requests" asp-action="Teacher" asp-route-id="@school.Id" class="btn btn-primary btn-sm ml-2" role="button" aria-pressed="true" title="Учител"><i class="fas fa-graduation-cap"></i></a>
+                            <a asp-controller="Requests" asp-action="Student" asp-route-id="@school.Id" class="btn btn-success btn-sm ml-2" role="button" aria-pressed="true" title="Ученик"><i class="fas fa-child"></i></a>
+                        }
                     </td>
                 }
             </tr>
