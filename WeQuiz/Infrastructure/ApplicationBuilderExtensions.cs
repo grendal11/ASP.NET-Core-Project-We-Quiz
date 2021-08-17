@@ -12,7 +12,6 @@ namespace WeQuiz.Infrastructure
     using WeQuiz.Data;
     using WeQuiz.Data.Models;
 
-
     using static WeQuiz.WebConstants;
     using static WeQuiz.Areas.Admin.AdminConstants;
 
@@ -35,6 +34,7 @@ namespace WeQuiz.Infrastructure
             SeedSchoolAdmin(services);
             SeedTeacher(services);
             SeedStudent(services);
+            SeedQuestions(services);
 
             return app;
         }
@@ -46,6 +46,7 @@ namespace WeQuiz.Infrastructure
             data.Database.Migrate();
         }
 
+        //Seeding towns data, needed for schools
         private static void SeedDistricts(IServiceProvider services)
         {
             var data = services.GetRequiredService<WeQuizDbContext>();
@@ -136,6 +137,7 @@ namespace WeQuiz.Infrastructure
             data.SaveChanges();
         }
 
+        //Seeding base categories - school subjects, classes etc.
         private static void SeedCategories(IServiceProvider services)
         {
             var data = services.GetRequiredService<WeQuizDbContext>();
@@ -188,7 +190,7 @@ namespace WeQuiz.Infrastructure
 
                 if (category.Name != "Общи")
                 {
-                    for (int i = 5; i <= 12; i++)
+                    for (int i = 2; i <= 12; i++)
                     {
                         subCategories.Add(new Subcategory
                         {
@@ -216,6 +218,7 @@ namespace WeQuiz.Infrastructure
             data.SaveChanges();
         }
 
+        //Seeding question types
         private static void SeedQuestionTypes(IServiceProvider services)
         {
             var data = services.GetRequiredService<WeQuizDbContext>();
@@ -235,6 +238,312 @@ namespace WeQuiz.Infrastructure
             data.SaveChanges();
         }
 
+
+        //Seeding random questions data for testing purposes
+        private static void SeedQuestions(IServiceProvider services)
+        {
+            var data = services.GetRequiredService<WeQuizDbContext>();
+
+            if (data.Questions.Any())
+            {
+                return;
+            }
+
+            var exactAnswers = new List<ExactAnswer>();
+            var trueFalseAnswers = new List<TrueFalseAnswer>();
+            var choiceQuestions = new List<Question>();
+
+            var subcategoryId = data.Subcategories
+                .Where(s => s.Name == "2 клас" && s.Category.Name == "Математика")
+                .First().Id;
+
+            var subcategoriesCount = data.Subcategories.Count();
+
+            Random r = new Random();
+
+
+            //Generating exact answer questions
+
+            for (int i = 0; i < 20; i++)
+            {
+                int a = r.Next(0, 51);
+                int b = r.Next(0, 51);
+
+                var answer = new ExactAnswer
+                {
+                    IntAnswer = a + b,
+                    Points = 1,
+                    Question = new Question
+                    {
+                        SubcategoryId = subcategoryId,
+                        Class = 2,
+                        SchoolId = 0,
+                        Text = string.Format("Какъв е сбора на {0} и {1}", a, b),
+                        QuestionTypeId = 3
+                    }
+                };
+
+                exactAnswers.Add(answer);
+            }
+
+            for (int i = 0; i < 20; i++)
+            {
+                int a = r.Next(1, 11);
+                int b = r.Next(1, 11);
+
+                var answer = new ExactAnswer
+                {
+                    IntAnswer = a * b,
+                    Points = 1,
+                    Question = new Question
+                    {
+                        SubcategoryId = subcategoryId,
+                        Class = 2,
+                        SchoolId = 0,
+                        Text = string.Format("Произведението на {0} и {1} е", a, b),
+                        QuestionTypeId = 3
+                    }
+                };
+
+                exactAnswers.Add(answer);
+            }
+
+            for (int i = 0; i < 20; i++)
+            {
+                int a = r.Next(0, 101);
+
+                var answer = new ExactAnswer
+                {
+                    IntAnswer = a,
+                    Points = 1,
+                    Question = new Question
+                    {
+                        SubcategoryId = r.Next(1, subcategoriesCount + 1),
+                        Class = r.Next(2, 13),
+                        SchoolId = 0,
+                        Text = string.Format("Произволен въпрос с точен отговор {0}", a),
+                        QuestionTypeId = 3
+                    }
+                };
+
+                exactAnswers.Add(answer);
+            }
+
+
+            //Generating true/false questions
+
+            for (int i = 0; i < 10; i++)
+            {
+                int a = r.Next(0, 51);
+                int b = r.Next(0, 51);
+
+                var answer = new TrueFalseAnswer
+                {
+                    Answer = true,
+                    Points = 1,
+                    Question = new Question
+                    {
+                        SubcategoryId = subcategoryId,
+                        Class = 3,
+                        SchoolId = 0,
+                        Text = string.Format("Сбора на {0} и {1} е {2}", a, b, a + b),
+                        QuestionTypeId = 3
+                    }
+                };
+
+                trueFalseAnswers.Add(answer);
+            }
+
+            for (int i = 0; i < 10; i++)
+            {
+                int a = r.Next(0, 51);
+                int b = r.Next(0, 51);
+                int c = r.Next(0, 51);
+
+                var answer = new TrueFalseAnswer
+                {
+                    Answer = false,
+                    Points = 1,
+                    Question = new Question
+                    {
+                        SubcategoryId = subcategoryId,
+                        Class = 3,
+                        SchoolId = 0,
+                        Text = string.Format("Сбора на {0} и {1} е {2}", a, b, a + b - c),
+                        QuestionTypeId = 3
+                    }
+                };
+
+                trueFalseAnswers.Add(answer);
+            }
+
+            for (int i = 0; i < 10; i++)
+            {
+                int a = r.Next(0, 11);
+                int b = r.Next(0, 11);
+
+                var answer = new TrueFalseAnswer
+                {
+                    Answer = true,
+                    Points = 1,
+                    Question = new Question
+                    {
+                        SubcategoryId = subcategoryId,
+                        Class = 3,
+                        SchoolId = 0,
+                        Text = string
+                            .Format("Произведението на {0} и {1} е {2}", a, b, a * b),
+                        QuestionTypeId = 3
+                    }
+                };
+
+                trueFalseAnswers.Add(answer);
+            }
+
+            for (int i = 0; i < 10; i++)
+            {
+                int a = r.Next(0, 11);
+                int b = r.Next(0, 11);
+                int c = r.Next(0, 11);
+
+                var answer = new TrueFalseAnswer
+                {
+                    Answer = false,
+                    Points = 1,
+                    Question = new Question
+                    {
+                        SubcategoryId = subcategoryId,
+                        Class = 3,
+                        SchoolId = 0,
+                        Text = string
+                            .Format("Произведението на {0} и {1} е {2}", a, b, a * b + c),
+                        QuestionTypeId = 3
+                    }
+                };
+
+                trueFalseAnswers.Add(answer);
+            }
+
+            for (int i = 0; i < 10; i++)
+            {                
+                var answer = new TrueFalseAnswer
+                {
+                    Answer = true,
+                    Points = 1,
+                    Question = new Question
+                    {
+                        SubcategoryId = subcategoryId,
+                        Class = r.Next(2, 13),
+                        SchoolId = 0,
+                        Text = string.Format("Произволен въпрос от тип да/не {0}", true),
+                        QuestionTypeId = 3
+                    }
+                };
+
+                trueFalseAnswers.Add(answer);
+            }
+
+            for (int i = 0; i < 10; i++)
+            {
+                var answer = new TrueFalseAnswer
+                {
+                    Answer = false,
+                    Points = 1,
+                    Question = new Question
+                    {
+                        SubcategoryId = subcategoryId,
+                        Class = r.Next(2, 13),
+                        SchoolId = 0,
+                        Text = string.Format("Произволен въпрос от тип да/не {0}", false),
+                        QuestionTypeId = 3
+                    }
+                };
+
+                trueFalseAnswers.Add(answer);
+            }
+
+            //Generating choice answers questions
+
+            for (int i = 0; i < 20; i++)
+            {
+                int a = r.Next(0, 51);
+                int b = r.Next(0, 51);
+
+                var question = new Question
+                {
+                    SubcategoryId = subcategoryId,
+                    Class = 3,
+                    SchoolId = 0,
+                    Text = string.Format("Сбора на {0} и {1} е равен на", a, b),
+                    QuestionTypeId = 1,
+                    ChoiceAnswers = new List<ChoiceAnswer>
+                    {
+                        new ChoiceAnswer { TextAnswer = a.ToString(), Points = 0},
+                        new ChoiceAnswer { TextAnswer = b.ToString(), Points = 0},
+                        new ChoiceAnswer { TextAnswer = (a+b).ToString(), Points = 1},
+                        new ChoiceAnswer { TextAnswer = (a+b-10).ToString(), Points = 0}
+                    }
+                };                        
+
+                choiceQuestions.Add(question);
+            }
+
+            for (int i = 0; i < 20; i++)
+            {
+                int a = r.Next(0, 11);
+                int b = r.Next(0, 11);
+                int c = r.Next(0, 11);
+
+                var question = new Question
+                {
+                    SubcategoryId = subcategoryId,
+                    Class = 3,
+                    SchoolId = 0,
+                    Text = string.Format("Произведението на {0} и {1} е равно на", a, b),
+                    QuestionTypeId = 1,
+                    ChoiceAnswers = new List<ChoiceAnswer>
+                    {
+                        new ChoiceAnswer { TextAnswer = (a*b+c).ToString(), Points = 0},
+                        new ChoiceAnswer { TextAnswer = (a*b).ToString(), Points = 1},
+                        new ChoiceAnswer { TextAnswer = (a+b).ToString(), Points = 0},
+                        new ChoiceAnswer { TextAnswer = (a*b-c).ToString(), Points = 0}
+                    }
+                };
+
+                choiceQuestions.Add(question);
+            }
+
+            for (int i = 0; i < 20; i++)
+            { 
+                var question = new Question
+                {
+                    SubcategoryId = subcategoryId,
+                    Class = r.Next(2, 13),
+                    SchoolId = 0,
+                    Text = string
+                        .Format("Произволен въпрос с избираеми отговори {0}", i+1),
+                    QuestionTypeId = 1,
+                    ChoiceAnswers = new List<ChoiceAnswer>
+                    {
+                        new ChoiceAnswer { TextAnswer = "Грешен отговор 1", Points = 0},
+                        new ChoiceAnswer { TextAnswer = "Верен отговор", Points = 1},
+                        new ChoiceAnswer { TextAnswer = "Грешен отговор 2", Points = 0},
+                        new ChoiceAnswer { TextAnswer = "Грешен отговор 3", Points = 0}
+                    }
+                };
+
+                choiceQuestions.Add(question);
+            }
+
+            data.ExactAnswers.AddRange(exactAnswers);
+            data.TrueFalseAnswers.AddRange(trueFalseAnswers);
+            data.Questions.AddRange(choiceQuestions);
+
+            data.SaveChanges();
+        }
+
+
+        //Seeding users with roles
         private static void SeedAdministrator(IServiceProvider services)
         {
             var userManager = services.GetRequiredService<UserManager<User>>();
