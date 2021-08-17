@@ -1,158 +1,94 @@
 ﻿namespace WeQuiz.Areas.Admin.Controllers
 {
-    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
-    using System.Collections.Generic;
-    using System.Linq;
-    using WeQuiz.Data;
     using WeQuiz.Areas.Admin.Models.Schools;
-    using WeQuiz.Data.Models;
+    using WeQuiz.Services.Schools;
 
     public class SchoolsController : AdminController
     {
 
-        private readonly WeQuizDbContext data;
+        private readonly ISchoolsService schools;
 
-        public SchoolsController(WeQuizDbContext data)
+        public SchoolsController(ISchoolsService schools)
         {
-            this.data = data;
+            this.schools = schools;
         }
 
         public IActionResult All()
         {
-            var schools = this.data
-                .Schools
-                .Select(s => new SchoolViewModel
-                {
-                    Id = s.Id,
-                    District = s.PopulatedArea.District.Name,
-                    PopulatedArea = s.PopulatedArea.Name,
-                    Name = s.Name,
-                    SchoolCode = s.SchoolCode
-                })
-                .OrderBy(s => s.Name)
-                .ToList();
-            ViewBag.Count = schools.Count;
+            var schools = this.schools.All();
 
             return View(schools);
         }
 
         public IActionResult Requested()
         {
-            var schools = this.data
-                .SchoolRequests
-                .Select(s => new RequestedSchoolsViewModel
-                {
-                    Id = s.Id,
-                    District = s.District,
-                    PopulatedArea = s.PopulatedArea,
-                    Name = s.Name
-                })
-                .OrderBy(s => s.Name)
-                .ToList();
-
-            ViewBag.Count = schools.Count;
+            var schools = this.schools.Requested();
 
             return View(schools);
         }
 
         public IActionResult Finish(int id) 
         {
-            var requestToRemove = this.data.SchoolRequests.Find(id);
-
-            this.data.SchoolRequests.Remove(requestToRemove);
-
-            this.data.SaveChanges();
+            this.schools.FinishSchoolRequest(id);
 
             return Redirect("/Admin/Schools/Requested");
         }
 
         public IActionResult Add() => View(new AddSchoolFormModel
         {
-            Districts = this.GetDistricts()
+            Districts = this.schools.GetDistricts()
         });
 
         [HttpPost]
         public IActionResult Add(AddSchoolFormModel school)
         {
-            if (!this.data.PopulatedAreas.Any(p => p.Id == school.PopulatedAreaId))
+            if (!this.schools.PopulatedAreaExists(school.PopulatedAreaId))
             {
                 this.ModelState.AddModelError(nameof(school.PopulatedAreaId), "Населеното място не съществува.");
             }
 
             if (!ModelState.IsValid)
             {
-                school.Districts = this.GetDistricts();
+                school.Districts = this.schools.GetDistricts();
 
                 return View(school);
             }
 
-            var newSchool = new School
-            {
-                Name = school.Name,
-                PopulatedAreaId = school.PopulatedAreaId,
-                SchoolCode = int.Parse(school.SchoolCode)
-            };
-
-            this.data.Schools.Add(newSchool);
-            this.data.SaveChanges();
+            this.schools.Add(school.Name, school.PopulatedAreaId, school.SchoolCode);
 
             return Redirect("/Admin/Schools/All");
         }
 
         public IActionResult AddPopulatedArea() => View(new AddPopulatedAreaFormModel
         {
-            Districts = this.GetDistricts()
+            Districts = this.schools.GetDistricts()
         });
 
         [HttpPost]
         public IActionResult AddPopulatedArea(AddPopulatedAreaFormModel populatedArea)
         {
-            if (!this.data.Districts.Any(d => d.Id == populatedArea.DistrictId))
+            if (!this.schools.DIstrictExists(populatedArea.DistrictId))
             {
                 this.ModelState.AddModelError(nameof(populatedArea.DistrictId), "Няма такава област.");
             }
 
             if (!ModelState.IsValid)
             {
-                populatedArea.Districts = this.GetDistricts();
+                populatedArea.Districts = this.schools.GetDistricts();
 
                 return View(populatedArea);
             }
 
-            var newPopulatedArea = new PopulatedArea
-            {
-                Name = populatedArea.Name,
-                DistrictId = populatedArea.DistrictId
-            };
-
-            this.data.PopulatedAreas.Add(newPopulatedArea);
-            this.data.SaveChanges();
+            this.schools.AddPopulatedArea(populatedArea.Name, populatedArea.DistrictId);
 
             return Redirect("/Admin/Schools/Add");
         }
 
-        private IEnumerable<DistrictViewModel> GetDistricts()
-            => this.data
-            .Districts
-            .Select(d => new DistrictViewModel
-            {
-                Id = d.Id,
-                Name = d.Name
-            })
-            .ToList();
-
+       
         public JsonResult GetPopulatedAreas(int districtId)
         {
-            var populatedAreas = this.data
-                .PopulatedAreas
-                .Where(pa => pa.DistrictId == districtId)
-                .Select(pa => new PopulatedAreasViewModel
-                {
-                    Id = pa.Id,
-                    Name = pa.Name
-                })
-                .ToList();
+            var populatedAreas = this.schools.GetPopulatedAreas(districtId);
 
             return Json(populatedAreas);
         }

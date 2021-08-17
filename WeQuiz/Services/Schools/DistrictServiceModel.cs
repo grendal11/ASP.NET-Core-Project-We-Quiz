@@ -1,6 +1,6 @@
-﻿namespace WeQuiz.Areas.Admin.Models.Schools
+﻿namespace WeQuiz.Services.Schools
 {
-    public class DistrictViewModel
+    public class DistrictServiceModel
     {
         public int Id { get; init; }
 

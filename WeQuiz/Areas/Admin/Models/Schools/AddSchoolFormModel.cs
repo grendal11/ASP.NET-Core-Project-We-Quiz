@@ -2,7 +2,7 @@
 {
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
-
+    using WeQuiz.Services.Schools;
     using static Data.DataConstants.School;
 
     public class AddSchoolFormModel
@@ -24,6 +24,6 @@
         [Display(Name = "Населено място")]
         public int PopulatedAreaId { get; init; }
 
-        public IEnumerable<DistrictViewModel> Districts { get; set; }
+        public IEnumerable<DistrictServiceModel> Districts { get; set; }
     }
 }

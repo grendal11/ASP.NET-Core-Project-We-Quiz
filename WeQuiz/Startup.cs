@@ -12,6 +12,7 @@ namespace WeQuiz
     using WeQuiz.Data.Models;
     using WeQuiz.Infrastructure;
     using WeQuiz.Services.Categories;
+    using WeQuiz.Services.Schools;
     using WeQuiz.Services.Statistics;
     using WeQuiz.Services.Users;
 
@@ -49,6 +50,7 @@ namespace WeQuiz
 
             services.AddTransient<IStatisticsService, StatisticsService>();
             services.AddTransient<ICategoriesService, CategoriesService>();
+            services.AddTransient<ISchoolsService, SchoolsService>();
             services.AddTransient<IUsersService, UsersService>();
         }
 

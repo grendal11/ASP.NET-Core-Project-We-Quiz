@@ -1,6 +1,6 @@
-﻿namespace WeQuiz.Areas.Admin.Models.Schools
+﻿namespace WeQuiz.Services.Schools
 {
-    public class SchoolViewModel
+    public class SchoolServiceModel
     {
         public int Id { get; init; }
 
@@ -11,6 +11,5 @@
         public string Name { get; init; }
 
         public int SchoolCode { get; init; }
-
     }
 }

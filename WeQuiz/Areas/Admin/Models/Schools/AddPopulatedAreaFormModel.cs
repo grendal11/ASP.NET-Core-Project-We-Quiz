@@ -3,7 +3,7 @@ namespace WeQuiz.Areas.Admin.Models.Schools
 {
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
-
+    using WeQuiz.Services.Schools;
     using static Data.DataConstants.PopulatedArea;
 
     public class AddPopulatedAreaFormModel
@@ -17,6 +17,6 @@ namespace WeQuiz.Areas.Admin.Models.Schools
         [Display(Name = "Област")]
         public int DistrictId { get; init; }
 
-        public IEnumerable<DistrictViewModel> Districts { get; set; }
+        public IEnumerable<DistrictServiceModel> Districts { get; set; }
     }
 }
