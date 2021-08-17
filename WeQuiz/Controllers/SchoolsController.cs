@@ -6,6 +6,7 @@
     using WeQuiz.Services.Schools;
     using WeQuiz.Services.Users;
 
+    [Authorize]
     public class SchoolsController : Controller
     {
         private readonly IUsersService users;
@@ -17,7 +18,6 @@
             this.users = users;
         }
 
-        [Authorize]
         public IActionResult All()
         {
             var schools = this.schools.All();

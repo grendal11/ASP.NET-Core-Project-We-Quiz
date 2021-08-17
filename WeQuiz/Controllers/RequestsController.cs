@@ -8,6 +8,7 @@
     using WeQuiz.Services.Schools;
     using WeQuiz.Services.Users;
 
+    [Authorize]
     public class RequestsController : Controller
     {
         private readonly IUsersService users;
@@ -21,14 +22,12 @@
             this.categories = categories;
         }
 
-        [Authorize]
+
         public IActionResult All() => View();
 
-        [Authorize]
         public IActionResult School() => View();
 
         [HttpPost]
-        [Authorize]
         public IActionResult School(SchoolRequestFormModel school)
         {
             if (!ModelState.IsValid)
@@ -41,7 +40,6 @@
             return RedirectToAction("All", "Schools");
         }
 
-        [Authorize]
         public IActionResult Category()
         {
             if (!User.IsSchoolAdmin() && !User.IsTeacher())
@@ -53,7 +51,6 @@
         }
 
         [HttpPost]
-        [Authorize]
         public IActionResult Category(CategoryRequestFormModel category)
         {
             var userId = User.Id();
@@ -68,14 +65,12 @@
             return RedirectToAction("All", "Requests");
         }
 
-        [Authorize]
         public IActionResult Subcategory() => View(new SubcategoryRequestFormModel
         {
             Categories = this.categories.Categories()
         });
 
         [HttpPost]
-        [Authorize]
         public IActionResult Subcategory(SubcategoryRequestFormModel subCategory)
         {
             if (!this.categories.HasParentCategoryById(subCategory.CategoryId))
@@ -102,8 +97,6 @@
             return RedirectToAction("All", "Requests");
         }
 
-
-        [Authorize]
         public IActionResult SchoolAdmin(int id)
         {
             var userId = User.Id();
@@ -123,10 +116,8 @@
             return RedirectToAction("All", "Requests");
         }
 
-        [Authorize]
         public IActionResult AdminPhone() => View();
 
-        [Authorize]
         [HttpPost]
         public IActionResult AdminPhone(UserPhoneServiceModel phone)
         {
@@ -137,7 +128,6 @@
             return RedirectToAction("All", "Requests");
         }
 
-        [Authorize]
         public IActionResult Teacher(int id)
         {
             var userId = User.Id();
@@ -152,7 +142,6 @@
             return RedirectToAction("All", "Requests");
         }
 
-        [Authorize]
         public IActionResult Student(int id)
         {
             var userId = User.Id();
@@ -167,24 +156,21 @@
             return RedirectToAction("All", "Requests");
         }
 
-        [Authorize]
+
         public IActionResult ChoiceQuestion() => View();
 
-        //[Authorize]
         //[HttpPost]
         //public IActionResult ChoiceQuestion() => View();
 
         [Authorize]
         public IActionResult TrueFalseQuestion() => View();
 
-        //[Authorize]
         //[HttpPost]
         //public IActionResult TrueFalseQuestion() => View();
 
         [Authorize]
         public IActionResult ExactAnswerQuestion() => View();
 
-        //[Authorize]
         //[HttpPost]
         //public IActionResult ExactAnswerQuestion() => View();
 

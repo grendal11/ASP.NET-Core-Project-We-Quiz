@@ -8,11 +8,15 @@
 
         IEnumerable<PendingCategoryServiceModel> PendingCategories();
 
+        public IEnumerable<PendingSubcategoryServiceModel> PendingSubcategories(int schoolId);
+
         IEnumerable<AllCategoriesServiceModel> All();
 
-        public IEnumerable<CategoryServiceModel> Categories();
+        IEnumerable<CategoryServiceModel> Categories();
 
         void Add(string name, int schoolCode);
+
+        public void AddSubcategory(string name, int categoryId, int schoolId);
 
         public void AddSuggestedCategory(string name, string description, bool isPrivate, string userId);
 
@@ -21,6 +25,10 @@
         void ApproveCategory(int id);
 
         void DenyCategory(int id);
+
+        void ApproveSubcategory(int id);
+
+        void DenySubcategory(int id);
 
         bool HasParentCategoryById(int id);
     }

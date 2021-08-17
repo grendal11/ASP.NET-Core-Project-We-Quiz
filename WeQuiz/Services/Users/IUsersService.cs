@@ -5,6 +5,7 @@
     public interface IUsersService
     {
         public IEnumerable<PedningAdminServiceModel> PendingAdmins();
+
         public IEnumerable<SchoolAdminServiceModel> AllSchoolAdmins();
 
         public string Alias(string userId);

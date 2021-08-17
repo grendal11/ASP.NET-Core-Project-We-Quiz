@@ -9,6 +9,7 @@
     using WeQuiz.Services.Users;
     using WeQuiz.Views.Profile;
 
+    [Authorize]
     public class ProfileController : Controller
     {
         private readonly WeQuizDbContext data;
@@ -20,7 +21,7 @@
             this.users = users;
         }
 
-        [Authorize]
+
         public IActionResult Info()
         {
             var userId = User.Id();
@@ -64,7 +65,7 @@
             return View(userInfo);
         }
 
-        [Authorize]
+
         public IActionResult Edit()
         {
             var userId = User.Id();
@@ -81,7 +82,6 @@
             return View(displayInfo);
         }
 
-        [Authorize]
         [HttpPost]
         public IActionResult Edit(ProfileFormModel profile)
         {

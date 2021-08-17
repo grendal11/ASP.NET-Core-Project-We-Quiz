@@ -66,7 +66,7 @@
 
         public IEnumerable<CategoryServiceModel> Categories()
         {
-            var categories =  this.data
+            var categories = this.data
                 .Categories
                 .Select(c => new CategoryServiceModel
                 {
@@ -97,7 +97,7 @@
             {
                 if (cat.SchoolId != 0)
                 {
-                    var school = data.Schools.FirstOrDefault(s => s.Id == cat.SchoolId);
+                    var school = this.data.Schools.FirstOrDefault(s => s.Id == cat.SchoolId);
 
                     cat.SchoolName = school == null ? "" : school.Name;
                 }
@@ -106,18 +106,48 @@
             return pendingCategories;
         }
 
+        public IEnumerable<PendingSubcategoryServiceModel> PendingSubcategories(int schoolId)
+        {
+            var pendingSubCategories = this.data.SuggestedSubcategories
+                .Where(sc => sc.SchoolId == schoolId || sc.SchoolId == 0)
+                .Select(sc => new PendingSubcategoryServiceModel
+                {
+                    Id = sc.Id,
+                    Name = sc.Name,
+                    Description = sc.Description,
+                    CategoryName = sc.Category.Name,
+                    SchoolId = sc.SchoolId
+                })
+                .OrderBy(sc => sc.Name)
+                .ToList();
+
+            return pendingSubCategories;
+        }
+
         public void Add(string name, int schoolCode)
         {
-            var school = data.Schools
+            var school = this.data.Schools
                 .FirstOrDefault(s => s.SchoolCode == schoolCode);
 
-            data.Categories.Add(new Category
+            this.data.Categories.Add(new Category
             {
                 Name = name,
                 SchoolId = school == null ? 0 : school.Id
             });
 
-            data.SaveChanges();
+            this.data.SaveChanges();
+        }
+
+        public void AddSubcategory(string name, int categoryId, int schoolId) 
+        { 
+            this.data.Subcategories.Add(new Subcategory
+            {
+                Name = name,
+                CategoryId = categoryId,
+                SchoolId = schoolId
+            });
+
+            this.data.SaveChanges();
         }
 
         public void AddSuggestedCategory(string name, string description, bool isPrivate, string userId)
@@ -133,16 +163,16 @@
                 SchoolId = schoolId
             };
 
-            data.SuggestedCategories.Add(newCategory);
-            data.SaveChanges();
+            this.data.SuggestedCategories.Add(newCategory);
+            this.data.SaveChanges();
         }
 
-        public void AddSuggestedSubcategory(string name, string description, int categoryId, bool isPrivate, string userId) 
+        public void AddSuggestedSubcategory(string name, string description, int categoryId, bool isPrivate, string userId)
         {
-            var currentUser = data.Users.Find(userId);
+            var currentUser = this.data.Users.Find(userId);
 
-            var schoolId = isPrivate ? 
-                currentUser.SchoolId : 
+            var schoolId = isPrivate ?
+                currentUser.SchoolId :
                 this.data.Categories.Find(categoryId).SchoolId;
 
             var newSubcategory = new SuggestedSubcategory
@@ -153,13 +183,13 @@
                 SchoolId = schoolId
             };
 
-            data.SuggestedSubcategories.Add(newSubcategory);
-            data.SaveChanges();
+            this.data.SuggestedSubcategories.Add(newSubcategory);
+            this.data.SaveChanges();
         }
 
         public void ApproveCategory(int id)
         {
-            var categoryToApprove = data.SuggestedCategories.Find(id);
+            var categoryToApprove = this.data.SuggestedCategories.Find(id);
 
             if (categoryToApprove != null)
             {
@@ -169,24 +199,54 @@
                     SchoolId = categoryToApprove.SchoolId
                 };
 
-                data.Categories.Add(newCategory);
-                data.SuggestedCategories.Remove(categoryToApprove);
-                data.SaveChanges();
+                this.data.Categories.Add(newCategory);
+                this.data.SuggestedCategories.Remove(categoryToApprove);
+                this.data.SaveChanges();
             }
         }
 
         public void DenyCategory(int id)
         {
-            var categoryToDeny = data.SuggestedCategories.Find(id);
+            var categoryToDeny = this.data.SuggestedCategories.Find(id);
 
             if (categoryToDeny != null)
             {
-                data.SuggestedCategories.Remove(categoryToDeny);
-                data.SaveChanges();
+                this.data.SuggestedCategories.Remove(categoryToDeny);
+                this.data.SaveChanges();
             }
         }
 
-        public bool HasParentCategoryById(int id) 
+        public void ApproveSubcategory(int id)
+        {
+            var subCategoryToApprove = this.data.SuggestedSubcategories.Find(id);
+
+            if (subCategoryToApprove != null)
+            {
+                var newSubcategory = new Subcategory
+                {
+                    Name = subCategoryToApprove.Name,
+                    CategoryId = subCategoryToApprove.CategoryId,
+                    SchoolId = subCategoryToApprove.SchoolId
+                };
+
+                this.data.Subcategories.Add(newSubcategory);
+                this.data.SuggestedSubcategories.Remove(subCategoryToApprove);
+                this.data.SaveChanges();
+            }
+        }
+
+        public void DenySubcategory(int id)
+        {
+            var subCategoryToDeny = data.SuggestedSubcategories.Find(id);
+
+            if (subCategoryToDeny != null)
+            {
+                this.data.SuggestedSubcategories.Remove(subCategoryToDeny);
+                this.data.SaveChanges();
+            }
+        }
+
+        public bool HasParentCategoryById(int id)
         {
             if (this.data.Categories.Any(c => c.Id == id))
             {
