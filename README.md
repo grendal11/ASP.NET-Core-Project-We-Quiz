@@ -10,10 +10,19 @@
 -	**User without school** – can offer subcategories
 -	all users except Admin can check and edit their own profile 
 
+
 **Next steps** (will be implemented soon):
 -	**Teacher** – can add questions and approve suggested questions, can get statistics for tests
 -	**Student** – can get statistics for own tests and suggested questions, can suggest questions, can access list with own suggested questions with status(approved/denied), can generate and take instant tests
 -	**User without school** – can offer subcategories, suggest questions, can generate and take tests with free for all questions
+
+
+**Test accounts**:
+student@weqiz.bg => student123
+teacher@weqiz.bg => teacher123
+sadmin@weqiz.bg => sadmin123
+admin@weqiz.bg => admin123
+
 
 **Technology stack:**
 -	ASP.NET Core 5.0
