@@ -97,5 +97,39 @@ namespace WeQuiz.Services.Questions
 
             return questionTypes;
         }
+
+        public bool AddQuestionToTest(string userId, int questionId)
+        {
+            var exists = this.data.ActiveTestConfigurations
+                .Any(q => q.QuestionId == questionId && q.UserId == userId);
+
+            if (exists)
+            {
+                return false;
+            }
+
+            this.data.ActiveTestConfigurations
+                .Add(new ActiveTestConfiguration 
+                { 
+                    UserId = userId,
+                    QuestionId = questionId
+                });
+
+            this.data.SaveChanges();
+
+            return true;
+        }
+
+        public bool ActiveTestTeacher(string userId)
+        {
+            var active = this.data.ActiveTestConfigurations.Any(t => t.UserId == userId);
+
+            if (active)
+            {
+                return true;
+            }
+
+            return false;
+        }
     }
 }

@@ -30,7 +30,7 @@
             {
                 roleName = "Ученик";
             }
-
+            
             if (user.IsInRole(WebConstants.TeacherRoleName))
             {
                 roleName = "Учител";

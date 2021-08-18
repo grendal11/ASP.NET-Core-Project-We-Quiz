@@ -7,6 +7,8 @@
     using WeQuiz.Services.Categories;
     using WeQuiz.Services.Questions;
 
+    using static WebConstants;
+
     [Authorize]
 
     public class TestsController : Controller
@@ -27,13 +29,13 @@
             var userId = User.Id();
 
             var queryResult = this.questions.All(
-                userId, 
-                query.CategoryId, 
-                query.Subcategory, 
-                query.Klas, 
-                query.QuestionTypeId, 
-                query.Text, 
-                query.CurrentPage, 
+                userId,
+                query.CategoryId,
+                query.Subcategory,
+                query.Klas,
+                query.QuestionTypeId,
+                query.Text,
+                query.CurrentPage,
                 AllQuestionsQueryModel.QuestionsPerPage);
 
             var categories = this.categories.OwnCategories(userId);
@@ -43,14 +45,32 @@
             query.Categories = categories;
             query.TotalQuestions = queryResult.TotalQuestions;
             query.Questions = queryResult.Questions;
-            
+
+            if (this.questions.ActiveTestTeacher(userId))
+            {
+                ViewBag.ActiveConfig = true;
+            }
+
             return View(query);
         }
+
 
         public IActionResult Auto() => View();
 
         public IActionResult Results() => View();
 
+        public IActionResult Add(int id)
+        {
+            string userId = User.Id();
 
+            var result = this.questions.AddQuestionToTest(userId, id);
+
+            if (!result)
+            {
+                TempData[GlobalMessageKey] = "Вече сте добавили този въпрос";
+            }
+
+            return RedirectToAction("Questions", "Tests");
+        }
     }
 }

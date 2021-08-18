@@ -419,7 +419,7 @@
             var user = this.data.Users.Find(userId);
 
             Task.Run(async () =>
-            {
+            { 
                 await userManager.RemoveFromRoleAsync(user, StudentRoleName);
             })
                 .GetAwaiter()
@@ -457,6 +457,7 @@
 
             this.data.SaveChanges();
         }
-        
+
+                       
     }
 }

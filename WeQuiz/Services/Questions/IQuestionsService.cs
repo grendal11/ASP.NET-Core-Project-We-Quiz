@@ -16,6 +16,10 @@ namespace WeQuiz.Services.Questions
             int questionsPerPage = 10);
 
         IEnumerable<QuestionTypeServiceModel> QuestionTypes();
+
+        bool AddQuestionToTest(string userId, int questionId);
+
+        bool ActiveTestTeacher(string userId);
     }
 
 }
