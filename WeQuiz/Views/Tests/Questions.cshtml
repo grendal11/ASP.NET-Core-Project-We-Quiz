@@ -1,0 +1,104 @@
+﻿@model AllQuestionsQueryModel
+
+@{
+    ViewBag.Title = "Списък с въпроси";
+}
+
+<h1 class="text-center" ->@ViewBag.Title</h1>
+<br />
+
+<form method="get">
+    <div class="row">
+        <div class="form-group col-md-4">
+            <div class="form-group">
+                <label asp-for="CategoryId"></label>
+                <select asp-for="CategoryId" class="form-control">
+                    <option value="">Всички</option>
+                    @foreach (var category in Model.Categories)
+                    {
+                        <option value="@category.Id">@category.Name</option>
+                    }
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group col-md-4">
+            <label asp-for="Subcategory"></label>
+            <input asp-for="Subcategory" class="form-control" placeholder="5 клас, ДЗИ, ...">
+        </div>
+
+        <div class="form-group col-md-4">
+            <label asp-for="Klas"></label>
+            <input asp-for="Klas" class="form-control" placeholder="3, 10, ...">
+        </div>
+
+        <div class="form-group col-md-4">
+            <div class="form-group">
+                <label asp-for="QuestionTypeId"></label>
+                <select asp-for="QuestionTypeId" class="form-control">
+                    <option value="">Всички</option>
+                    @foreach (var qType in Model.QuestionTypes)
+                    {
+                        <option value="@qType.Id">@qType.QuestionType</option>
+                    }
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group col-md-4">
+            <label asp-for="Text"></label>
+            <input asp-for="Text" class="form-control" placeholder="3, 10, ...">
+        </div>
+        <div class="form-group mt-2 col-md-4">
+            <input type="submit" class="btn btn-primary mt-4" name="name" value="Търсене" />
+        </div>
+    </div>
+</form>
+
+@{
+    var previousPage = Model.CurrentPage - 1;
+    if (previousPage < 1)
+    {
+        previousPage = 1;
+    }
+
+    var maxPage = Math.Ceiling((double)Model.TotalQuestions / AllQuestionsQueryModel.QuestionsPerPage);
+}
+
+<div class="row mb-5">
+    <div class="col-md-6">
+        <a class="btn btn-primary @(Model.CurrentPage == 1 ? "disabled" : string.Empty)"
+           asp-controller="Tests"
+           asp-action="Questions"
+           asp-route-currentPage="@previousPage"
+           asp-route-categoryId="@Model.CategoryId"
+           asp-route-subcategory="@Model.Subcategory"
+           asp-route-klas="@Model.Klas"
+           asp-route-questionTypeId="@Model.QuestionTypeId"
+           asp-route-text="@Model.Text"><<</a>
+    </div>
+
+    @{
+        var shouldButtonBeDisabled = Model.CurrentPage == maxPage ||
+                                     !Model.Questions.Any();
+    }
+
+    <div class="col-md-6">
+        <a class="btn btn-primary float-sm-right @(shouldButtonBeDisabled ? "disabled" : string.Empty)" style="margin-top: 10px"
+           asp-controller="Tests"
+           asp-action="Questions"
+           asp-route-currentPage="@(Model.CurrentPage + 1)"
+           asp-route-categoryId="@Model.CategoryId"
+           asp-route-subcategory="@Model.Subcategory"
+           asp-route-klas="@Model.Klas"
+           asp-route-questionTypeId="@Model.QuestionTypeId"
+           asp-route-text="@Model.Text">>></a>
+    </div>
+</div>
+
+@if (!Model.Questions.Any())
+{
+    <h2 class="text-center">Не откриваме въпроси отговарящи на това търсене!</h2>
+}
+
+<partial name="_QuestionPartial" model="@Model.Questions" />

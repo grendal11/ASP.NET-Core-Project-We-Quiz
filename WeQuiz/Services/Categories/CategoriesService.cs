@@ -77,6 +77,24 @@
                 .ToList();
 
             return categories;
+        }     
+        
+        public IEnumerable<CategoryServiceModel> OwnCategories(string userId)
+        {
+            var schoolId = this.data.Users.Find(userId).SchoolId;
+                        
+            var categories = this.data
+                .Categories
+                .Where(c=> c.SchoolId == 0 || c.SchoolId == schoolId)
+                .Select(c => new CategoryServiceModel
+                {
+                    Id = c.Id,
+                    Name = c.Name,
+                    SchoolId = c.SchoolId
+                })
+                .ToList();
+
+            return categories;
         }
         
         public IEnumerable<TeacherCategoryServiceModel> TeacherCategories(string userId)

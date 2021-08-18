@@ -10,6 +10,8 @@
     using WeQuiz.Services.Users;
     using WeQuiz.Views.Profile;
 
+    using static WebConstants;
+
     [Authorize]
     public class ProfileController : Controller
     {
@@ -99,8 +101,10 @@
             return RedirectToAction("Info", "Profile");
         }
 
+        [Authorize(Roles = StudentRoleName)]
         public IActionResult StudentClass() => View();
 
+        [Authorize(Roles = StudentRoleName)]
         [HttpPost]
         public IActionResult StudentClass(StudentClassServiceModel student)
         {
@@ -111,6 +115,7 @@
             return RedirectToAction("Info", "Profile");
         }
 
+        [Authorize(Roles = TeacherRoleName)]
         public IActionResult TeacherCategories()
         {
             var userId = User.Id();
@@ -120,6 +125,7 @@
             return View(categories);
         }
 
+        [Authorize(Roles = TeacherRoleName)]
         public IActionResult AddCategory(int id)
         {
             string userId = User.Id();
@@ -129,6 +135,7 @@
             return RedirectToAction("TeacherCategories", "Profile");
         }
 
+        [Authorize(Roles = TeacherRoleName)]
         public IActionResult RemoveCategory(int id)
         {
             string userId = User.Id();

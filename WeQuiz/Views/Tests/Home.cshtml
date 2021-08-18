@@ -1,0 +1,16 @@
+﻿@{
+    ViewBag.Title = "Тестове";
+}
+
+<h1 class="text-center" ->@ViewBag.Title</h1>
+<br />
+
+<div class="row justify-content-center pt-3 pb-3">
+    @if (User.IsTeacher())
+    {
+        <a asp-controller="Tests" asp-action="Auto" class="btn btn-outline-danger btn-sm ml-2 float-right" role="button" aria-pressed="true">Генерирай нов автоматичен тест</a>
+        <a asp-controller="Tests" asp-action="Questions" class="btn btn-outline-danger btn-sm ml-2 float-right" role="button" aria-pressed="true">Избери от списък с въпроси</a>
+    }
+
+    <a asp-controller="Tests" asp-action="Results" class="btn btn-outline-primary btn-sm ml-2 float-right" role="button" aria-pressed="true">Резултати</a>
+</div>

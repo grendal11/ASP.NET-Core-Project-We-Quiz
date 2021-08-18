@@ -14,6 +14,8 @@
 
         IEnumerable<CategoryServiceModel> Categories();
 
+        IEnumerable<CategoryServiceModel> OwnCategories(string userId);
+
         IEnumerable<TeacherCategoryServiceModel> TeacherCategories(string userId);
 
         void Add(string name, int schoolCode);

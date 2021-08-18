@@ -1,0 +1,46 @@
+﻿@model IEnumerable<QuestionServiceModel>
+@{ 
+    int i = 1;
+}
+
+<table class="table table-bordered table-hover">
+    <thead class="thead-light">
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Категория</th>
+            <th scope="col">Подкатегория</th>
+            <th scope="col">Клас</th>
+            <th scope="col">Тип</th>
+            <th scope="col">Текст</th>
+            <th scope="col">Действие</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var question in Model)
+        {
+            <tr>
+                <th scope="row">@i</th>
+                <td>@question.CategoryName</td>
+                <td>@question.SubcategoryName</td>
+                <td>@question.Class</td>
+                @if (question.QuestionTypeId == 1)
+                {
+                    <td>Точен отговор</td>
+                }
+                @if (question.QuestionTypeId == 2)
+                {
+                    <td>Да/НЕ</td>
+                }
+                @if (question.QuestionTypeId == 3)
+                {
+                    <td>Избираем отговор</td>
+                }
+                <td>@question.Text</td>
+                <td>
+                    <a asp-controller="Tests" asp-action="Add" asp-route-id="@question.Id" class="btn btn-success btn-sm ml-2" role="button" aria-pressed="true"><i class="fas fa-check"></i> Добави</a>
+                </td>
+            </tr>
+            i++;
+        }
+    </tbody>
+</table>
