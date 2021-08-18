@@ -30,6 +30,7 @@ namespace WeQuiz.Infrastructure
             SeedCategories(services);
             SeedSubcategories(services);
             SeedQuestionTypes(services);
+            SeedTestTypes(services);
             SeedAdministrator(services);
             SeedSchoolAdmin(services);
             SeedTeacher(services);
@@ -233,6 +234,26 @@ namespace WeQuiz.Infrastructure
                 new QuestionType { Type = "Избираем отговор"},
                 new QuestionType { Type = "Вярно/невярно"},
                 new QuestionType { Type = "Точен отговор"},
+            });
+
+            data.SaveChanges();
+        }
+
+        private static void SeedTestTypes(IServiceProvider services)
+        {
+            var data = services.GetRequiredService<WeQuizDbContext>();
+
+            if (data.TestTypes.Any())
+            {
+                return;
+            }
+
+            data.TestTypes.AddRange(new[]
+            {
+                new TestType { Type = "Смесен тип"},
+                new TestType { Type = "Избираем отговор"},
+                new TestType { Type = "Вярно/невярно"},
+                new TestType { Type = "Точен отговор"},
             });
 
             data.SaveChanges();

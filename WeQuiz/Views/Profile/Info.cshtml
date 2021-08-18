@@ -24,20 +24,25 @@
                         @if (Model.RoleName == "Ученик")
                         {
                             <p class="card-header">
-                                Клас: <strong>@Model.Class</strong>
+                                Клас: @if (Model.Class > 0)
+                                {
+                                    <strong>@Model.Class клас</strong>
+                                }
+                                <a asp-controller="Profile" asp-action="StudentClass" asp-route-id="@Model.UserId" class="btn btn-outline-danger btn-sm ml-2" role="button" aria-pressed="true">Промяна</a>
                             </p>
                         }
                         @if (Model.RoleName == "Учител")
                         {
-                            <div class="card-header">
-                                Предмети:
-                                <ul>
-                                    @foreach (var category in Model.Categories)
-                                    {
-                                        <li>@category.Name</li>
-                                    }
-                                </ul>
-                            </div>
+                    <div class="card-header">
+                        Предмети:
+                        <a asp-controller="Profile" asp-action="TeacherCategories" asp-route-id="@Model.UserId" class="btn btn-outline-danger btn-sm ml-2" role="button" aria-pressed="true">Промяна</a>
+                        <ul>
+                            @foreach (var category in Model.Categories)
+                            {
+                                <li>@category.Name</li>
+                            }
+                        </ul>
+                    </div>
                         }
                     </div>
                 </div>

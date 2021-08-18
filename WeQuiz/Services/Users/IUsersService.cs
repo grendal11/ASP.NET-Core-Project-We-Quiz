@@ -20,6 +20,12 @@
 
         public void EditProfile(string name, string alias, string phone, string userId);
 
+        void AddStudentClass(int studentClass, string userId);
+
+        void AddTeacherCategory(int categoryId, string userId);
+
+        void RemoveTeacherCategory(int categoryId, string userId);
+
         void RequestAdmin(string userId, int id);
 
         void ApproveAdmin(string userId);

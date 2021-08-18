@@ -76,6 +76,34 @@
             this.data.SaveChanges();
         }
 
+        public void AddStudentClass(int studentClass, string userId)
+        {
+            var student = this.data.Students.FirstOrDefault(s=>s.UserId==userId);
+
+            if (student == null)
+            {
+                return;
+            }
+
+            if (studentClass <= 12 && studentClass >= 1)
+            {
+                student.Class = studentClass;
+            }
+
+            this.data.SaveChanges();
+
+        }
+
+        public void AddTeacherCategory(int subjectId, string userId)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void RemoveTeacherCategory(int subjectId, string userId)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public IEnumerable<PedningAdminServiceModel> PendingAdmins()
         {
             var pendingAdmins = this.data.SchoolAdmins
@@ -429,5 +457,6 @@
 
             this.data.SaveChanges();
         }
+        
     }
 }

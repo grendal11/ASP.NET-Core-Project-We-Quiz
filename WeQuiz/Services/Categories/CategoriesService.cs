@@ -78,6 +78,25 @@
 
             return categories;
         }
+        
+        public IEnumerable<TeacherCategoryServiceModel> TeacherCategories(string userId)
+        {
+            var schoolId = this.data.Users.Find(userId).SchoolId;
+
+            var categories = this.data.Categories
+                .Select(c => new TeacherCategoryServiceModel
+                {
+                    Id = c.Id,
+                    Name = c.Name,
+                    HasIt = this.data.TeachersCategories
+                    .Any(tc => tc.Teacher.UserId == userId && tc.CategoryId == c.Id) ? true : false,
+                    IsPrivate = c.SchoolId == schoolId ? true : false
+                })
+                .OrderBy(c => c.Name)
+                .ToList();
+
+            return categories;
+        }
 
         public IEnumerable<PendingCategoryServiceModel> PendingCategories()
         {
@@ -138,8 +157,8 @@
             this.data.SaveChanges();
         }
 
-        public void AddSubcategory(string name, int categoryId, int schoolId) 
-        { 
+        public void AddSubcategory(string name, int categoryId, int schoolId)
+        {
             this.data.Subcategories.Add(new Subcategory
             {
                 Name = name,
@@ -256,5 +275,34 @@
             return false;
         }
 
+        public void AddToTeacher(string userId, int categoryId)
+        {
+            var teacherId = this.data.Teachers.FirstOrDefault(t => t.UserId == userId).Id;
+
+            var categoryToAdd = new TeacherCategory
+            {
+                CategoryId = categoryId,
+                TeacherId = teacherId,
+                IsApproved = true
+            };
+
+            this.data.TeachersCategories.Add(categoryToAdd);
+
+            this.data.SaveChanges();
+        }
+
+        public void RemoveFromTeacher(string userId, int categoryId)
+        {
+            var teacherId = this.data.Teachers.FirstOrDefault(t => t.UserId == userId).Id;
+
+            var categoryToRemove = this.data.TeachersCategories
+                .First(c => c.CategoryId == categoryId && c.TeacherId == teacherId);
+
+            if (categoryToRemove != null)
+            {
+                this.data.TeachersCategories.Remove(categoryToRemove);
+                this.data.SaveChanges();
+            }
+        }
     }
 }

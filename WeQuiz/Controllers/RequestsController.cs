@@ -8,6 +8,8 @@
     using WeQuiz.Services.Schools;
     using WeQuiz.Services.Users;
 
+    using static WebConstants;
+
     [Authorize]
     public class RequestsController : Controller
     {
@@ -15,7 +17,10 @@
         private readonly ISchoolsService schools;
         private readonly ICategoriesService categories;
 
-        public RequestsController(IUsersService users, ISchoolsService schools, ICategoriesService categories)
+        public RequestsController(
+            IUsersService users, 
+            ISchoolsService schools, 
+            ICategoriesService categories)
         {
             this.users = users;
             this.schools = schools;
@@ -44,6 +49,7 @@
         {
             if (!User.IsSchoolAdmin() && !User.IsTeacher())
             {
+                TempData[GlobalMessageKey] = "Само учители и администратори могат да предлагат категории!";
                 return RedirectToAction("All", "Requests");
             }
 

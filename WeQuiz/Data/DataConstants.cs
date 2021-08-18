@@ -11,6 +11,12 @@
             public const int AnswerMinLength = 2;
         }
 
+        public class Test
+        {
+            public const int TestTypeMaxLength = 20;
+            public const int TitleMaxLength = 100;
+            public const int TitleMinLength = 2;
+        }
 
         public const int DescriptionMaxLength = 200;
 

@@ -24,5 +24,8 @@
         public IEnumerable<ChoiceAnswer> ChoiceAnswers { get; init; } =
            new List<ChoiceAnswer>();
 
+        public IEnumerable<TestQuestion> TestsQuestions { get; init; } = 
+            new List<TestQuestion>();
+
     }
 }

@@ -15,17 +15,20 @@
         {
         }
 
+        public DbSet<ActiveStudentTest> ActiveStudentTests { get; init; }
+        public DbSet<ActiveTestConfiguration> ActiveTestConfigurations { get; init; }
         public DbSet<Category> Categories { get; init; }
         public DbSet<ChoiceAnswer> ChoiceAnswers { get; init; }
         public DbSet<District> Districts { get; init; }
         public DbSet<ExactAnswer> ExactAnswers { get; init; }
         public DbSet<PopulatedArea> PopulatedAreas { get; init; }
-        public DbSet<QuestionType> QuestionTypes { get; init; }
         public DbSet<Question> Questions { get; init; }
+        public DbSet<QuestionType> QuestionTypes { get; init; }
         public DbSet<School> Schools { get; init; }
         public DbSet<SchoolAdmin> SchoolAdmins { get; init; }
         public DbSet<SchoolRequest> SchoolRequests { get; init; }
         public DbSet<Student> Students { get; init; }
+        public DbSet<StudentAnswer> StudentsAnswers { get; init; }
         public DbSet<Subcategory> Subcategories { get; init; }
         public DbSet<SuggestedCategory> SuggestedCategories { get; init; }
         public DbSet<SuggestedChoiceQuestion> SuggestedChoiceQuestions { get; init; }
@@ -34,6 +37,10 @@
         public DbSet<SuggestedTrueFalseQuestion> SuggestedTrueFalseQuestions { get; init; }
         public DbSet<Teacher> Teachers { get; init; }
         public DbSet<TeacherCategory> TeachersCategories { get; init; }
+        public DbSet<Test> Tests { get; init; }
+        public DbSet<TestQuestion> TestsQuestions { get; init; }
+        public DbSet<TestResult> TestsResults { get; init; }
+        public DbSet<TestType> TestTypes { get; init; }
         public DbSet<TrueFalseAnswer> TrueFalseAnswers { get; init; }
 
 
@@ -72,6 +79,13 @@
                 .HasOne(q => q.Subcategory)
                 .WithMany(q => q.Questions)
                 .HasForeignKey(q => q.SubcategoryId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder
+                .Entity<Test>()
+                .HasOne(t => t.TestType)
+                .WithMany(t => t.Tests)
+                .HasForeignKey(t => t.TestTypeId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder

@@ -14,6 +14,8 @@
 
         IEnumerable<CategoryServiceModel> Categories();
 
+        IEnumerable<TeacherCategoryServiceModel> TeacherCategories(string userId);
+
         void Add(string name, int schoolCode);
 
         public void AddSubcategory(string name, int categoryId, int schoolId);
@@ -31,5 +33,9 @@
         void DenySubcategory(int id);
 
         bool HasParentCategoryById(int id);
+
+        void AddToTeacher(string userId, int categoryId);
+
+        void RemoveFromTeacher(string userId, int categoryId);
     }
 }

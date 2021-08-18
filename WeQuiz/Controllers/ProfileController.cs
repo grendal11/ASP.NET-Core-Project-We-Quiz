@@ -6,6 +6,7 @@
     using WeQuiz.Data;
     using WeQuiz.Infrastructure;
     using WeQuiz.Models.Profile;
+    using WeQuiz.Services.Categories;
     using WeQuiz.Services.Users;
     using WeQuiz.Views.Profile;
 
@@ -14,11 +15,16 @@
     {
         private readonly WeQuizDbContext data;
         private readonly IUsersService users;
+        private readonly ICategoriesService categories;
 
-        public ProfileController(WeQuizDbContext data, IUsersService users)
+        public ProfileController(
+            WeQuizDbContext data, 
+            IUsersService users, 
+            ICategoriesService categories)
         {
             this.data = data;
             this.users = users;
+            this.categories = categories;
         }
 
 
@@ -41,7 +47,8 @@
                 Email = user.Email,
                 FullName = user.FullName,
                 Alias = user.Alias,
-                SchoolName = user.SchoolId!=0 ? this.data.Schools.Find(user.SchoolId).Name : "",
+                SchoolName = user.SchoolId!=0 ? 
+                    this.data.Schools.Find(user.SchoolId).Name : "",
                 RoleName = roleName,
                 Class = User.IsStudent() ?
                     data.Students.First(s => s.UserId == userId).Class : 0
@@ -90,6 +97,45 @@
             this.users.EditProfile(profile.FullName, profile.Alias, profile.PhoneNumber, userId);
 
             return RedirectToAction("Info", "Profile");
+        }
+
+        public IActionResult StudentClass() => View();
+
+        [HttpPost]
+        public IActionResult StudentClass(StudentClassServiceModel student)
+        {
+            var userId = User.Id();
+
+            this.users.AddStudentClass(student.Class, userId);
+
+            return RedirectToAction("Info", "Profile");
+        }
+
+        public IActionResult TeacherCategories()
+        {
+            var userId = User.Id();
+
+            var categories = this.categories.TeacherCategories(userId);
+
+            return View(categories);
+        }
+
+        public IActionResult AddCategory(int id)
+        {
+            string userId = User.Id();
+
+            this.categories.AddToTeacher(userId, id);
+
+            return RedirectToAction("TeacherCategories", "Profile");
+        }
+
+        public IActionResult RemoveCategory(int id)
+        {
+            string userId = User.Id();
+
+            this.categories.RemoveFromTeacher(userId, id);
+
+            return RedirectToAction("TeacherCategories", "Profile");
         }
     }
 }

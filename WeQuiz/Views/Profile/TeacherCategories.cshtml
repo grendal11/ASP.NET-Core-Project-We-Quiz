@@ -1,0 +1,51 @@
+﻿@model IEnumerable<TeacherCategoryServiceModel>
+
+@{
+    ViewBag.Title = "Категории предмети";
+}
+
+@{
+    int i = 1;
+}
+
+
+<h1 class="text-center">@ViewBag.Title</h1>
+<br />
+<table class="table table-bordered table-hover">
+    <thead class="thead-light">
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Име на категория</th>
+            <th scope="col">Достъпност</th>
+            <th scope="col">Действие</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var category in Model)
+        {
+            <tr>
+                <th scope="row">@i</th>
+                <td>@category.Name</td>
+                @if (category.IsPrivate)
+                {
+                    <td>Само за нашето училище</td>
+                }
+                else
+                {
+                    <td>Обща</td>
+                }
+                <td>
+                    @if (category.HasIt)
+                    {
+                        <a asp-area="" asp-controller="Profile" asp-action="RemoveCategory" asp-route-id="@category.Id" class="btn btn-danger btn-sm ml-2" role="button" aria-pressed="true"><i class="fas fa-trash-alt"></i> Премахни</a>
+                    }
+                    else
+                    {
+                        <a asp-area="" asp-controller="Profile" asp-action="AddCategory" asp-route-id="@category.Id" class="btn btn-success btn-sm ml-2" role="button" aria-pressed="true"><i class="fas fa-check"></i> Добави</a>
+                    }
+                </td>
+            </tr>
+            i++;
+        }
+    </tbody>
+</table>
