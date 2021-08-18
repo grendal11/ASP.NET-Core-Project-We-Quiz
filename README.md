@@ -18,10 +18,10 @@
 
 
 **Test accounts**:
-student@weqiz.bg => student123
-teacher@weqiz.bg => teacher123
-sadmin@weqiz.bg => sadmin123
-admin@weqiz.bg => admin123
+- student@weqiz.bg => student123
+- teacher@weqiz.bg => teacher123
+- sadmin@weqiz.bg => sadmin123
+- admin@weqiz.bg => admin123
 
 
 **Technology stack:**
