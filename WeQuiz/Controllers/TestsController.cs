@@ -72,5 +72,16 @@
 
             return RedirectToAction("Questions", "Tests");
         }
+
+        public IActionResult FinishConfig() => View();
+
+        [HttpPost]
+        public IActionResult FinishConfig(ConfigTestFormModel config)
+        {
+
+
+            return RedirectToAction("Home", "Tests");
+        }
+
     }
 }

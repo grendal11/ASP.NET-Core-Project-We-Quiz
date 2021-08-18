@@ -20,6 +20,8 @@ namespace WeQuiz.Services.Questions
         bool AddQuestionToTest(string userId, int questionId);
 
         bool ActiveTestTeacher(string userId);
+
+        void TestConfig(string userId, string title, int studentClass, bool isActive);
     }
 
 }

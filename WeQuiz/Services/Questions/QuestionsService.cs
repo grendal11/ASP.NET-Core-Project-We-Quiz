@@ -131,5 +131,46 @@ namespace WeQuiz.Services.Questions
 
             return false;
         }
+
+        public void TestConfig(string userId, string title, int studentClass, bool isActive)
+        {
+            var questions = this.data.ActiveStudentTests
+                .Where(q => q.UserId == userId)
+                .ToList();
+
+            var isChoiceType = questions.All(q => q.Question.QuestionTypeId == 3);
+            var isTrueFalseType = questions.All(q => q.Question.QuestionTypeId == 2);
+            var isExactType = questions.All(q => q.Question.QuestionTypeId == 1);
+
+            var typeTest = 4;
+
+            if (isChoiceType)
+            {
+                typeTest = 3;
+            }
+
+            if (isTrueFalseType)
+            {
+                typeTest = 2;
+            }
+
+            if (isExactType)
+            {
+                typeTest = 1;
+            }
+
+            var testType = this.data.TestTypes.First(tt => tt.Id == typeTest);
+
+            this.data.Tests.Add(new Test
+            {
+                 OwnerId = userId,
+                 Title = title,
+                 Class=studentClass,
+                 IsActive = isActive,
+                 TestTypeId= testType.Id
+            });
+
+            this.data.SaveChanges();
+        }
     }
 }

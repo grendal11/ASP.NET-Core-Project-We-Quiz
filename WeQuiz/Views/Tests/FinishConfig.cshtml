@@ -1,0 +1,32 @@
+﻿@model ConfigTestFormModel
+
+@{
+    ViewBag.Title = "Конфигуриране на тест";
+}
+
+<h1 class="text-center" ->@ViewBag.Title</h1>
+<br />
+<form method="post" class="col-lg-6 offset-lg-3 col-sm-12 col-md-8 offset-md-2">
+    <div class="form-group">
+        <label asp-for="Title"></label>
+        <input asp-for="Title" class="form-control" id="name">
+        <span asp-validation-for="Title" class="small text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Class"></label>
+        <input asp-for="Class" class="form-control" id="name">
+    </div>
+    <div class="form-group">
+        <div class="checkbox">
+            <label asp-for="IsActive">
+                <input asp-for="IsActive" />
+                @Html.DisplayNameFor(m => m.IsActive)
+            </label>
+        </div>
+    </div>
+    <input class="btn btn-primary" type="submit" value="Запиши" />
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
