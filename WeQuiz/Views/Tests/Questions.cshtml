@@ -21,7 +21,7 @@
                 </select>
             </div>
         </div>
-
+       
         <div class="form-group col-md-4">
             <label asp-for="Subcategory"></label>
             <input asp-for="Subcategory" class="form-control" placeholder="5 клас, ДЗИ, ...">
@@ -67,6 +67,7 @@
     }
 
     var maxPage = Math.Ceiling((double)Model.TotalQuestions / AllQuestionsQueryModel.QuestionsPerPage);
+    ViewBag.cp = Model.CurrentPage;
 }
 
 <div class="row mb-5">
@@ -104,5 +105,6 @@
 {
     <h2 class="text-center">Не откриваме въпроси отговарящи на това търсене!</h2>
 }
+
 
 <partial name="_QuestionPartial" model="@Model.Questions" />

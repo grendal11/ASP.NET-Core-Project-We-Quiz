@@ -78,7 +78,10 @@
         [HttpPost]
         public IActionResult FinishConfig(ConfigTestFormModel config)
         {
+            //Added in 00.01
+            var userId = User.Id();
 
+            this.questions.TestConfig(userId, config.Title, config.Class, config.IsActive);
 
             return RedirectToAction("Home", "Tests");
         }

@@ -36,6 +36,18 @@
             return View(totals);
         }
 
-        public IActionResult Error() => View();
+        public IActionResult Error(int? statusCode = null)
+        {
+            if (statusCode.HasValue)
+            {
+                if (statusCode == 404)
+                {
+                    var viewName = statusCode.ToString();
+                    return View(viewName);
+                }
+            }
+
+            return View();
+        }
     }
 }

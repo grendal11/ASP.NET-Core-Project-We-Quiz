@@ -64,7 +64,7 @@ namespace WeQuiz
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseMigrationsEndPoint();
+                app.UseMigrationsEndPoint();               
             }
             else
             {
@@ -72,11 +72,13 @@ namespace WeQuiz
                 app.UseHsts();
             }
 
+            app.UseStatusCodePagesWithReExecute("/Home/Error", "?statusCode={0}");
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseRouting();
-
+                       
             app.UseAuthentication();
             app.UseAuthorization();
 

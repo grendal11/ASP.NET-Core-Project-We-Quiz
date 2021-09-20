@@ -19,7 +19,7 @@
         @foreach (var question in Model)
         {
             <tr>
-                <th scope="row">@i</th>
+                <th scope="row">@(i+(ViewBag.cp-1)*10)</th>
                 <td>@question.CategoryName</td>
                 <td>@question.SubcategoryName</td>
                 <td>@question.Class</td>
